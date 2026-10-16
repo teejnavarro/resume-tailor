@@ -1,0 +1,78 @@
+# Sample resume source for Resume Tailor. Everything here is invented.
+# Top-level keys must come before the first [table] header in TOML.
+certifications = [
+  "Google Data Analytics Professional Certificate",
+  "Tableau Desktop Specialist",
+]
+
+[contact]
+name = "Jamie Sample"
+location = "Springfield, USA"
+email = "jamie.sample@example.com"
+phone = "+1 555 0100"
+links = ["linkedin.com/in/example", "github.com/example"]
+
+[[education]]
+school = "Springfield State University"
+location = "Springfield, USA"
+degree = "B.S. in Statistics"
+dates = "2014 – 2018"
+details = ["Senior project: forecast of weekly bus ridership for the city transit office"]
+
+[[experience]]
+company = "Northwind Grocers"
+location = "Springfield, USA"
+
+  [[experience.roles]]
+  title = "Senior Data Analyst"
+  dates = "Mar 2022 – Present"
+  bullets = [
+    "Built a weekly Tableau report on shrink by store and department for 40 store managers",
+    "Wrote the SQL that matches supplier invoices to delivery receipts and flags mismatches over $50",
+    "Trained 8 analysts on the shared date and store tables so reports stopped disagreeing",
+    "Replaced three hand-kept spreadsheets with one scheduled query on the warehouse",
+  ]
+
+  [[experience.roles]]
+  title = "Data Analyst"
+  dates = "Jun 2019 – Feb 2022"
+  bullets = [
+    "Pulled daily sales into Excel and SQL views for the regional buying team",
+    "Found a duplicate-loyalty-ID bug that inflated member counts by about 6%",
+    "Answered 15 to 20 ad hoc requests a month from pricing and merchandising",
+  ]
+
+[[experience]]
+company = "Contoso Mobile"
+location = "Shelbyville, USA"
+
+  [[experience.roles]]
+  title = "Reporting Analyst"
+  dates = "Aug 2018 – May 2019"
+  bullets = [
+    "Built the monthly churn table from billing exports using Python and pandas",
+    "Checked 12 dashboard figures against the billing system each month and logged the differences",
+    "Documented 30 report definitions in a shared wiki",
+  ]
+
+[[projects]]
+name = "Transit Ridership Dashboard"
+dates = "2023"
+bullets = [
+  "Combined public bus ridership files for 5 years into one Power BI report",
+  "Published the cleaned data and the SQL on GitHub",
+]
+
+[[leadership]]
+organization = "Springfield Data Meetup"
+role = "Volunteer Organizer"
+dates = "2021 – Present"
+bullets = ["Book speakers and a room for a monthly meetup of about 40 people"]
+
+[[skills]]
+category = "Data & SQL"
+items = ["SQL", "PostgreSQL", "Excel", "pandas"]
+
+[[skills]]
+category = "Reporting"
+items = ["Tableau", "Power BI"]

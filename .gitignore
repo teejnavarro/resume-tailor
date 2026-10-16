@@ -1,0 +1,10 @@
+# Personal data: stays on the owner's PC, never pushed
+master-resume.md
+applications/
+assets/source/
+notes/
+FOUNDRY.md
+
+# Python
+__pycache__/
+.venv/
