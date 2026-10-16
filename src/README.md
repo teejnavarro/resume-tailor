@@ -1,1 +1,1 @@
-Code or source files, if the project has any. Delete this folder if not needed.
+`render.py` turns a resume source file (TOML) into a PDF, using the layout in `resume.typ`.

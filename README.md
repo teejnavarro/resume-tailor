@@ -14,21 +14,25 @@ Keep one master career file and turn any job posting into a truthful, tailored, 
 
 ## Status
 
-Work in progress. The resume source format and a sample file are done. The renderer and the content checks are being built.
+Work in progress. The resume source format, a sample file and the renderer are done. The content checks are being built.
 
 ## Try it on the sample
 
-Available once the renderer lands (in progress):
+Needs Python 3.11 or newer. The only dependency is `typst`, installed with pip:
 
 ```
-python src/render.py examples/sample-resume.toml sample.pdf
+python -m venv .venv
+.venv\Scripts\python -m pip install -r requirements.txt
+.venv\Scripts\python src/render.py examples/sample-resume.toml sample.pdf
 ```
+
+On macOS or Linux, use `.venv/bin/python` instead of `.venv\Scripts\python`.
 
 The sample is a made-up person, Jamie Sample, with invented employers.
 
 ## Resume source format
 
-The source file is TOML, read with Python's standard `tomllib`, so there is nothing to install. Sections:
+The source file is TOML, read with Python's standard `tomllib`. Sections:
 
 - `[contact]`: name, location, email, optional phone and links
 - `[[education]]`: school, location, degree, dates, optional details
@@ -36,6 +40,10 @@ The source file is TOML, read with Python's standard `tomllib`, so there is noth
 - `[[projects]]`, `[[leadership]]`: optional entries with bullets
 - `[[skills]]`: a category and its items
 - `certifications`: optional list of strings, placed at the top of the file
+
+Optional: `phone`, `links`, `location`, education `details`, and the whole `projects`, `leadership` and `certifications` sections. A section with no entries is left out of the PDF.
+
+The PDF prints the sections in this order: Experience, Projects, Leadership, Education, Skills. Certifications print as the last line of Skills.
 
 See [examples/sample-resume.toml](examples/sample-resume.toml) for every section filled in.
 
@@ -47,4 +55,5 @@ The master file, the per-job application folders and any source documents are gi
 
 - `docs/`: the project brief and the style guide for resume wording
 - `examples/`: the fictional sample resume source
-- `src/`: the renderer and checks (in progress)
+- `src/`: the renderer (`render.py` and the layout template `resume.typ`); content checks to come
+- `requirements.txt`: the pinned dependency
