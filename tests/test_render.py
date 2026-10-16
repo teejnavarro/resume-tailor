@@ -206,14 +206,14 @@ bullets = ["Ran the club"]
 # --- Contact comes only from [contact] --------------------------------------
 
 def test_contact_details_only_from_contact_table(tmp_path):
-    toml = 'email = "toplevel-leak@example.com"\nphone = "+1 000 0000"\n' + MINIMAL + """
+    toml = 'email = "toplevel-leak@example.com"\nphone = "+1 555 0100"\n' + MINIMAL + """
 [profile]
 email = "profile-leak@example.com"
 """
     text, _ = render_toml(tmp_path, toml)
     assert "pat@example.com" in text
     assert "leak@example.com" not in text
-    assert "+1 000 0000" not in text
+    assert "+1 555 0100" not in text
 
 
 def test_renderer_never_references_master_resume():
