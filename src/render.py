@@ -24,7 +24,7 @@ def main() -> int:
             ignore_system_fonts=True,
         )
         args.output.write_bytes(pdf)
-    except (OSError, tomllib.TOMLDecodeError, typst.TypstError) as e:
+    except (OSError, tomllib.TOMLDecodeError, TypeError, typst.TypstError) as e:
         print(f"render failed: {e}", file=sys.stderr)
         return 1
     print(f"wrote {args.output}")
