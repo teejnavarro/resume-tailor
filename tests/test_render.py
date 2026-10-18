@@ -24,7 +24,7 @@ SECTIONS = ["Experience", "Projects", "Leadership", "Education", "Skills"]
 def render(source, output, cwd):
     """Run the CLI as a user would; cwd is a scratch dir, not the repo."""
     return subprocess.run(
-        [sys.executable, str(RENDER), str(source), str(output)],
+        [sys.executable, str(RENDER), str(source), str(output), "--no-master"],
         capture_output=True,
         text=True,
         encoding="utf-8",
