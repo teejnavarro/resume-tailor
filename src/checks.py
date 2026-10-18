@@ -154,7 +154,7 @@ def _contact_patterns(master_path):
     for i, bullet in enumerate(_contact_bullets(master_path)):
         digits = re.sub(r"\D", "", bullet)
         if len(digits) >= 9 and phone is None:
-            phone = re.compile(r"[\s-]?".join(digits[-10:]))
+            phone = re.compile(r"[\s().-]*".join(digits[-10:]))
         elif (
             i > 0
             and address is None

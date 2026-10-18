@@ -466,7 +466,10 @@ def test_staged_private_paths_fail(repo, master, name):
     assert f"{name}:0: private-path" in result.stderr
 
 
-@pytest.mark.parametrize("text", ["5550109999", "+1-555-010-9999", "tel 555 0109999"])
+@pytest.mark.parametrize(
+    "text",
+    ["5550109999", "+1-555-010-9999", "tel 555 0109999", "(555) 010-9999", "555.010.9999", "+1 (555) 010 9999", "555  010 - 9999"],
+)
 def test_staged_phone_variants_fail(repo, master, text):
     stage(repo, "a.txt", f"{text}\n")
     assert "a.txt:1: private-phone" in run_staged(repo, master).stderr
