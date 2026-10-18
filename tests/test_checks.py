@@ -478,7 +478,8 @@ def test_render_refuses_untraced_number(tmp_path, master):
 
 
 @pytest.mark.parametrize(
-    "name", ["FOUNDRY.md", "notes/idea.md", "assets/source/old.pdf", "applications/TRACKER.md"]
+    "name",
+    ["FOUNDRY.md", "notes/idea.md", "assets/source/old.pdf", "applications/TRACKER.md", ".gsd/x-log.md", "backlog/RT-001.md"],
 )
 def test_staged_private_paths_fail(repo, master, name):
     stage(repo, name, "x\n")

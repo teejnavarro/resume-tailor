@@ -17,7 +17,7 @@ STYLE = ROOT / "docs" / "STYLE.md"
 PESO = "\u20b1"
 
 PRIVATE_PATHS = ("master-resume.md", "FOUNDRY.md")
-PRIVATE_PREFIXES = ("applications/", "assets/source/", "notes/")
+PRIVATE_PREFIXES = ("applications/", "assets/source/", "notes/", ".gsd/", "backlog/")
 NEVER_LIST = "Never list in Skills:"
 TABLE_RE = re.compile(r"^\[\[?([\w.]+)\]\]?")
 NUMBER_RE = re.compile(r"\d[\d,]*(?:\.\d+)?")
