@@ -297,3 +297,196 @@ def test_staged_without_master_still_checks_paths_and_peso(repo, tmp_path):
     assert result.returncode == 1
     assert "warning: no master file" in result.stderr
     assert "peso-amount" in result.stderr
+
+
+# --- QA edge cases ----------------------------------------------------------
+
+
+def write_source(tmp_path, lines):
+    path = tmp_path / "source.toml"
+    path.write_text("\n".join(lines), encoding="utf-8")
+    return path
+
+
+def test_banned_phrase_with_ellipsis_and_curly_apostrophe(tmp_path, master):
+    path = make_source(tmp_path, extra_bullet="Grew sales In Today\u2019s Fast-Paced market")
+    failures, _ = run_source(path, master)
+    assert rules(failures) == [
+        (line_of(path, "Fast-Paced"), "banned-word", "in today's fast-paced")
+    ]
+
+
+def test_banned_word_not_matched_inside_a_longer_word(tmp_path, master):
+    path = make_source(tmp_path, extra_bullet="Ran robustness tests on a data-driven model")
+    failures, _ = run_source(path, master)
+    assert rules(failures) == [(line_of(path, "robustness"), "banned-word", "data-driven")]
+
+
+def test_number_tokens():
+    text = "1,200+ users, 2023\u201325, 3.5 hours, 79%, ended in 10."
+    assert checks.numbers(text) == {"1200", "2023", "25", "3.5", "79", "10"}
+
+
+def test_decimal_number_must_match_exactly(tmp_path, master):
+    path = make_source(tmp_path, extra_bullet="Cut 14.5 hours")
+    failures, _ = run_source(path, master)
+    assert rules(failures) == [(line_of(path, "14.5"), "untraced-number", "14.5")]
+
+
+def test_number_range_checks_both_ends(tmp_path, master):
+    passing = make_source(tmp_path, extra_bullet="Ran 14\u201379 tests")
+    assert run_source(passing, master)[0] == []
+    path = make_source(tmp_path, extra_bullet="Ran 14\u201380 tests")
+    failures, _ = run_source(path, master)
+    assert rules(failures) == [(line_of(path, "80"), "untraced-number", "80")]
+
+
+def test_number_with_comma_matches_master_without_comma(tmp_path, master):
+    path = make_source(tmp_path, extra_bullet="Reached 1200 segments")
+    assert run_source(path, master)[0] == []
+
+
+def test_number_on_quoted_master_line_is_untraced(tmp_path):
+    master = tmp_path / "m.md"
+    master.write_text("## Experience\n> note: 321 calls\n- Set up 14 phones\n", encoding="utf-8")
+    path = make_source(tmp_path, extra_bullet="Took 321 calls")
+    failures, _ = run_source(path, master)
+    assert "321" in [f.detail for f in failures]
+
+
+def test_interview_only_match_is_case_insensitive(tmp_path):
+    master = tmp_path / "m.md"
+    master.write_text("## Experience\n- Gap year (Interview Only): 321\n", encoding="utf-8")
+    path = make_source(tmp_path, extra_bullet="Took 321 calls")
+    assert "321" in [f.detail for f in run_source(path, master)[0]]
+
+
+def test_comment_lines_are_skipped(tmp_path, master):
+    lines = list(SOURCE_LINES)
+    lines.insert(0, "# draft: leveraged 987 things")
+    failures, _ = run_source(write_source(tmp_path, lines), master)
+    assert failures == []
+
+
+def test_line_numbers_are_one_based(tmp_path, master):
+    path = write_source(tmp_path, ['summary = "Leveraged 987 tools"', *SOURCE_LINES])
+    failures, _ = run_source(path, master)
+    assert rules(failures) == [(1, "banned-word", "leveraged"), (1, "untraced-number", "987")]
+
+
+def test_contact_numbers_ignored_only_inside_contact(tmp_path, master):
+    lines = list(SOURCE_LINES)
+    lines.insert(lines.index("[[experience]]") + 1, f'note = "{FAKE_PHONE}"')
+    path = write_source(tmp_path, lines)
+    failures, _ = run_source(path, master)
+    assert {f.detail for f in failures} == {"1", "555", "010", "9999"}
+    assert {f.line_no for f in failures} == {line_of(path, "note =")}
+
+
+def test_peso_in_contact_table_still_fails(tmp_path, master):
+    lines = list(SOURCE_LINES)
+    lines.insert(1, f'rate = "{PESO}500"')
+    failures, _ = run_source(write_source(tmp_path, lines), master)
+    assert [(f.line_no, f.rule) for f in failures] == [(2, "peso-amount")]
+
+
+def test_blocked_skill_case_insensitive(tmp_path, master):
+    path = make_source(tmp_path, skills='["SQL", "dax"]')
+    failures, _ = run_source(path, master)
+    assert rules(failures) == [(line_of(path, "items"), "blocked-skill", "DAX")]
+
+
+def test_blocked_skill_not_matched_inside_another_word(tmp_path, master):
+    path = make_source(tmp_path, skills='["SQL", "C", "Daxter", "Pythonic"]')
+    assert run_source(path, master)[0] == []
+
+
+def test_blocked_skill_only_checked_inside_skills_tables(tmp_path, master):
+    lines = [*SOURCE_LINES, "[[projects]]", 'name = "Python and DAX tool"']
+    assert run_source(write_source(tmp_path, lines), master)[0] == []
+
+
+def test_never_list_parsing(tmp_path):
+    master = tmp_path / "m.md"
+    master.write_text("## Skills\n- Never list in Skills:  Python , ,C++,  A/B \n", encoding="utf-8")
+    _, never = checks.master_regions(master)
+    assert never == ["Python", "C++", "A/B"]
+
+
+def test_cli_passing_source(tmp_path, master):
+    result = run_cli(CHECKS_CLI, make_source(tmp_path), "--master", master, cwd=tmp_path)
+    assert result.returncode == 0, result.stderr
+    assert "checks passed" in result.stdout
+
+
+@pytest.mark.parametrize("args", [[], ["x.toml", "--staged"]])
+def test_cli_needs_exactly_one_of_source_or_staged(tmp_path, args):
+    result = run_cli(CHECKS_CLI, *args, cwd=tmp_path)
+    assert result.returncode == 2
+    assert "give either a source file or --staged" in result.stderr
+
+
+@pytest.mark.parametrize("script", [CHECKS_CLI, RENDER])
+def test_non_utf8_source_fails_without_traceback(tmp_path, script):
+    path = tmp_path / "bad.toml"
+    path.write_bytes(b'title = "Caf\xe9"\n')
+    args = [path] if script == CHECKS_CLI else [path, tmp_path / "out.pdf"]
+    result = run_cli(script, *args, "--no-master", cwd=tmp_path)
+    assert result.returncode == 1
+    assert "failed:" in result.stderr
+    assert "Traceback" not in result.stderr
+    assert not (tmp_path / "out.pdf").exists()
+
+
+def test_render_missing_master_warns_and_still_renders(tmp_path):
+    path = make_source(tmp_path)
+    out = tmp_path / "out.pdf"
+    result = run_cli(RENDER, path, out, "--master", tmp_path / "nope.md", cwd=tmp_path)
+    assert result.returncode == 0, result.stderr
+    assert "warning: no master file" in result.stderr
+    assert out.exists()
+
+
+def test_render_refuses_untraced_number(tmp_path, master):
+    path = make_source(tmp_path, extra_bullet="Saved 987 hours")
+    out = tmp_path / "out.pdf"
+    result = run_cli(RENDER, path, out, "--master", master, cwd=tmp_path)
+    assert result.returncode == 1
+    assert f"{path}:{line_of(path, '987')}: untraced-number: 987" in result.stderr
+    assert not out.exists()
+
+
+@pytest.mark.parametrize(
+    "name", ["FOUNDRY.md", "notes/idea.md", "assets/source/old.pdf", "applications/TRACKER.md"]
+)
+def test_staged_private_paths_fail(repo, master, name):
+    stage(repo, name, "x\n")
+    result = run_staged(repo, master)
+    assert result.returncode == 1
+    assert f"{name}:0: private-path" in result.stderr
+
+
+@pytest.mark.parametrize("text", ["5550109999", "+1-555-010-9999", "tel 555 0109999"])
+def test_staged_phone_variants_fail(repo, master, text):
+    stage(repo, "a.txt", f"{text}\n")
+    assert "a.txt:1: private-phone" in run_staged(repo, master).stderr
+
+
+def test_staged_address_needs_whole_word(repo, master):
+    stage(repo, "a.txt", "Faketownship is a made-up word\n")
+    result = run_staged(repo, master)
+    assert result.returncode == 0, result.stderr
+
+
+def test_staged_guard_scans_staged_content_not_working_tree(repo, master):
+    stage(repo, "a.txt", "clean\n")
+    (repo / "a.txt").write_text(f"cost {PESO}20\n", encoding="utf-8")
+    assert run_staged(repo, master).returncode == 0
+
+
+def test_staged_deleted_file_is_not_scanned(repo, master):
+    stage(repo, "a.txt", f"cost {PESO}20\n")
+    git = ["git", "-c", "user.name=t", "-c", "user.email=t@example.com", "-c", "core.hooksPath="]
+    subprocess.run([*git, "commit", "-qm", "x"], cwd=repo, check=True, capture_output=True)
+    subprocess.run(["git", "rm", "-q", "a.txt"], cwd=repo, check=True, capture_output=True)
+    assert run_staged(repo, master).returncode == 0
