@@ -212,7 +212,7 @@ def main(argv=None):
     else:
         try:
             failures, warnings = check_source(args.source, args.master, use_master=not args.no_master)
-        except OSError as e:
+        except (OSError, UnicodeDecodeError) as e:
             print(f"checks failed: {e}", file=sys.stderr)
             return 1
     for message in [*warnings, *failures]:
