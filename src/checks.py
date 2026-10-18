@@ -130,7 +130,7 @@ def check_source(source_path, master_path=MASTER, style_path=STYLE, use_master=T
             for token in sorted(numbers(line)):
                 if token not in known:
                     failures.append(Failure(name, line_no, "untraced-number", token))
-        if table == "skills":
+        if table in ("skills", ""):
             for term, pattern in never:
                 if pattern.search(line):
                     failures.append(Failure(name, line_no, "blocked-skill", term))

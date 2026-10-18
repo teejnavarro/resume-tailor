@@ -406,6 +406,27 @@ def test_blocked_skill_only_checked_inside_skills_tables(tmp_path, master):
     assert run_source(write_source(tmp_path, lines), master)[0] == []
 
 
+def certs_source(tmp_path, certs_lines):
+    return write_source(tmp_path, [*certs_lines, "", *SOURCE_LINES])
+
+
+def test_blocked_skill_in_one_line_certifications_fails(tmp_path, master):
+    path = certs_source(tmp_path, ['certifications = ["SQL Basics", "DAX Fundamentals"]'])
+    failures, _ = run_source(path, master)
+    assert rules(failures) == [(1, "blocked-skill", "DAX")]
+
+
+def test_blocked_skill_in_multi_line_certifications_fails_on_item_line(tmp_path, master):
+    path = certs_source(tmp_path, ["certifications = [", '  "SQL Basics",', '  "C++ Essentials",', "]"])
+    failures, _ = run_source(path, master)
+    assert rules(failures) == [(3, "blocked-skill", "C++")]
+
+
+def test_clean_certifications_pass(tmp_path, master):
+    path = certs_source(tmp_path, ['certifications = ["SQL Basics", "Data Handling"]'])
+    assert run_source(path, master)[0] == []
+
+
 def test_never_list_parsing(tmp_path):
     master = tmp_path / "m.md"
     master.write_text("## Skills\n- Never list in Skills:  Python , ,C++,  A/B \n", encoding="utf-8")
