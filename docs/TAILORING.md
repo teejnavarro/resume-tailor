@@ -47,7 +47,7 @@ applications/
 
 The tracker is a Notion database. `applications/TRACKER.md` (private) names it and gives its data source.
 
-First look for an existing row with the same Link (a Notion rows query filtered on Link). If there is one, update that row. Never add a second one. Otherwise add a row with Company, Role, Source, Link, Deadline (only if the posting states one), Local folder (the folder name) and Status **Drafting**.
+First look for an existing row with the same Link (a Notion rows query filtered on Link). If there is one, update only its Role, Deadline and Local folder, and never change its Status. Never add a second row. Otherwise add a row with Company, Role, Source, Link, Deadline (only if the posting states one), Local folder (the folder name) and Status **Drafting**.
 
 If Notion can't be reached or the write fails, carry on with tailoring. Tell me plainly that the row was not added, and put the row's values under a "Tracker row not added" heading in `notes.md` so it can be added later.
 
@@ -190,7 +190,7 @@ Keep it to about one page, in the STYLE.md voice.
 When I approve the PDF:
 
 - Check the folder has all five files: `job.md`, `notes.md`, `resume.toml`, the PDF and `prep.md`.
-- Update the Notion row: Link and Local folder filled in, status still **Drafting**. If the earlier write failed, try again now.
+- Check the Notion row has its Link and Local folder filled in, and leave its status as it is (**Drafting** for a new job). If the earlier write failed, try again now, and once it works, remove the "Tracker row not added" note from `notes.md`.
 - The status moves to **Applied** only when I say I've applied, and the Applied date is set to that day. This tool never applies for me.
 - Later updates (Assessment, Interview, Offer, Rejected, Withdrawn) are made to the same Notion row when I report them.
 
