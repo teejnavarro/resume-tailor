@@ -105,8 +105,8 @@ def test_three_pages_fails_and_writes_nothing(tmp_path):
 
 def test_check_pdf_reports_missing_text():
     pdf, data = sample_pdf_and_data()
-    data["leadership"] = [{"name": "text that is not in the pdf"}]
-    pages, missing = pdf_checks.check_pdf(pdf, data)
+    data["leadership"] = [{"organization": "text that is not in the pdf"}]
+    pages, missing, unprinted = pdf_checks.check_pdf(pdf, data)
     assert pages == 1
     assert missing == ["text that is not in the pdf"]
 
@@ -120,7 +120,7 @@ def test_check_pdf_matches_straight_quote_and_extra_spaces(tmp_path):
         str(TEMPLATE), sys_inputs={"resume": json.dumps(data)}, ignore_system_fonts=True
     )
     spaced = {"contact": {"name": "Pat   O'Fictional"}, "skills": [{"items": ["spread sheets"]}]}
-    assert pdf_checks.check_pdf(pdf, spaced) == (1, [])
+    assert pdf_checks.check_pdf(pdf, spaced) == (1, [], [])
 
 
 def test_squash_normalises_curly_quotes_and_whitespace():
@@ -135,7 +135,7 @@ def test_strings_walks_nested_values_but_not_keys():
 def test_check_pdf_ignores_tables_the_template_does_not_print():
     pdf, data = sample_pdf_and_data()
     data["profile"] = {"email": "not-printed@example.com"}
-    assert pdf_checks.check_pdf(pdf, data) == (1, [])
+    assert pdf_checks.check_pdf(pdf, data) == (1, [], [])
 
 
 # --- QA edge cases ----------------------------------------------------------
@@ -190,7 +190,7 @@ def test_two_page_summary_is_a_single_line_plus_warning(tmp_path):
 )
 def test_check_pdf_reads_back_special_characters(text):
     data = with_bullet(text)
-    assert pdf_checks.check_pdf(compile_data(data), data) == (1, [])
+    assert pdf_checks.check_pdf(compile_data(data), data) == (1, [], [])
 
 
 def test_check_pdf_reads_skills_and_certifications():
@@ -200,9 +200,9 @@ def test_check_pdf_reads_skills_and_certifications():
         "certifications": ["Cert Alpha", "Cert Beta"],
     }
     pdf = compile_data(data)
-    assert pdf_checks.check_pdf(pdf, data) == (1, [])
+    assert pdf_checks.check_pdf(pdf, data) == (1, [], [])
     data["certifications"].append("Cert Gamma")
-    assert pdf_checks.check_pdf(pdf, data) == (1, ["Cert Gamma"])
+    assert pdf_checks.check_pdf(pdf, data) == (1, ["Cert Gamma"], [])
 
 
 def test_skills_are_printed_joined_with_comma_space():
@@ -249,6 +249,7 @@ def test_unreadable_text_fails_and_writes_nothing(tmp_path):
     result = render(source, out, tmp_path)
     assert result.returncode == 1
     assert "render failed: text not readable in the PDF:" in result.stderr
+    assert result.stderr.strip().endswith(", no PDF written")
     assert "Traceback" not in result.stderr
     assert not out.exists()
 
@@ -264,17 +265,92 @@ def test_unreadable_text_reports_how_many_more(tmp_path):
     assert "(and 2 more)" in result.stderr
 
 
-@pytest.mark.parametrize("kind", ["three-pages", "unreadable"])
-def test_failed_output_check_leaves_an_older_pdf_untouched(tmp_path, kind):
+def failing_source(tmp_path, kind):
     if kind == "three-pages":
-        source = fake_resume(tmp_path, 24)
-    else:
-        source = write_toml(tmp_path, f'[contact]\nname = "Pat {chr(0x6F22)}"\n')
+        return fake_resume(tmp_path, 24)
+    if kind == "unreadable":
+        return write_toml(tmp_path, f'[contact]\nname = "Pat {chr(0x6F22)}"\n')
+    if kind == "unprinted":
+        return write_toml(tmp_path, '[contact]\nname = "Pat"\nnickname = "P"\n')
+    return write_toml(tmp_path, "[contact\nname = broken\n")
+
+
+@pytest.mark.parametrize("kind", ["three-pages", "unreadable", "unprinted", "broken-toml"])
+def test_failed_render_removes_an_older_pdf(tmp_path, kind):
+    source = failing_source(tmp_path, kind)
+    out = tmp_path / "out.pdf"
+    out.write_bytes(b"older pdf")
+    result = render(source, out, tmp_path)
+    assert result.returncode == 1
+    assert not out.exists()
+    assert "removed old" in result.stderr
+
+
+def test_content_check_failure_removes_an_older_pdf(tmp_path):
+    source = write_toml(tmp_path, '[contact]\nname = "Pat"\nlocation = "Leveraged Town"\n')
+    out = tmp_path / "out.pdf"
+    out.write_bytes(b"older pdf")
+    result = render(source, out, tmp_path)
+    assert result.returncode == 1
+    assert "banned-word" in result.stderr
+    assert not out.exists()
+
+
+def test_missing_source_keeps_an_older_pdf(tmp_path):
+    out = tmp_path / "out.pdf"
+    out.write_bytes(b"older pdf")
+    result = render(tmp_path / "typo.toml", out, tmp_path)
+    assert result.returncode == 1
+    assert out.read_bytes() == b"older pdf"
+    assert "removed old" not in result.stderr
+
+
+def test_non_utf8_source_keeps_an_older_pdf(tmp_path):
+    source = tmp_path / "source.toml"
+    source.write_bytes(b'[contact]\nname = "Pat \xff"\n')
     out = tmp_path / "out.pdf"
     out.write_bytes(b"older pdf")
     result = render(source, out, tmp_path)
     assert result.returncode == 1
     assert out.read_bytes() == b"older pdf"
+
+
+def test_output_same_as_source_is_never_deleted(tmp_path):
+    source = write_toml(tmp_path, '[contact]\nname = "Pat"\nnickname = "P"\n')
+    before = source.read_bytes()
+    result = render(source, source, tmp_path)
+    assert result.returncode == 1
+    assert source.read_bytes() == before
+    assert "removed old" not in result.stderr
+
+
+def test_unprinted_field_gets_a_clear_message(tmp_path):
+    source = write_toml(
+        tmp_path,
+        '[contact]\nname = "Pat"\nnickname = "P"\n\n[[experience]]\ncompany = "Co"\n\n'
+        '  [[experience.roles]]\n  title = "Analyst"\n  notes = "x"\n',
+    )
+    out = tmp_path / "out.pdf"
+    result = render(source, out, tmp_path)
+    assert result.returncode == 1
+    assert "field contact.nickname is not printed by the template (and 1 more), no PDF written" in result.stderr
+    assert "text not readable" not in result.stderr
+    assert not out.exists()
+
+
+def test_check_pdf_lists_unprinted_field_names():
+    data = with_bullet("ok")
+    pdf = compile_data(data)
+    data["experience"][0]["roles"][0]["notes"] = "n"
+    data["contact"]["nickname"] = "P"
+    pages, missing, unprinted = pdf_checks.check_pdf(pdf, data)
+    assert missing == []
+    assert unprinted == ["contact.nickname", "experience.roles.notes"]
+
+
+def test_every_field_in_the_sample_is_in_fields():
+    data = tomllib.loads(SAMPLE.read_text(encoding="utf-8"))
+    assert pdf_checks.check_pdf(compile_data(data), data) == (1, [], [])
 
 
 def test_pypdf_is_a_runtime_requirement():
