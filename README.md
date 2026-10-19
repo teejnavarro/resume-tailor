@@ -14,7 +14,7 @@ Keep one master career file and turn any job posting into a truthful, tailored, 
 
 ## Status
 
-Work in progress. The resume source format, a sample file and the renderer are done. The content checks are being built.
+Work in progress. The resume source format, a sample file, the renderer and the content checks are done. The output checks are next.
 
 ## Try it on the sample
 
@@ -29,6 +29,8 @@ python -m venv .venv
 On macOS or Linux, use `.venv/bin/python` instead of `.venv\Scripts\python`.
 
 The sample is a made-up person, Jamie Sample, with invented employers.
+
+The renderer runs the content checks first and writes no PDF if one fails; without a master file it prints a warning and skips the number and skill checks (or pass `--no-master` to skip them quietly). To run the tests, install `requirements-dev.txt` and run `python -m pytest`. To turn on the commit guard that blocks personal data, run `git config core.hooksPath hooks` once.
 
 ## Resume source format
 
@@ -49,11 +51,13 @@ See [examples/sample-resume.toml](examples/sample-resume.toml) for every section
 
 ## Privacy by design
 
-The master file, the per-job application folders and any source documents are git-ignored and never leave the owner's PC. The renderer reads only the per-job source file, never the master file, so private notes cannot reach a PDF by accident. The sample in this repo is fictional.
+The master file, the per-job application folders and any source documents are git-ignored and never leave the owner's PC. The renderer builds the PDF from the per-job source file only, so private notes cannot reach a PDF by accident. The content checks read the master file only to compare against, never to print it. They reject peso amounts on a resume, and a pre-commit hook blocks private files, peso amounts and the owner's phone and address from being committed. The sample in this repo is fictional.
 
 ## Repo layout
 
 - `docs/`: the project brief and the style guide for resume wording
 - `examples/`: the fictional sample resume source
-- `src/`: the renderer (`render.py` and the layout template `resume.typ`); content checks to come
+- `src/`: the renderer (`render.py` and the layout template `resume.typ`) and the content checks (`checks.py`)
+- `hooks/`: the pre-commit guard
+- `tests/`: the test suite
 - `requirements.txt`: the pinned dependency
