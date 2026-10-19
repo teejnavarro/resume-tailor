@@ -36,7 +36,7 @@ Each successful render ends with a one-line summary, for example `wrote sample.p
 
 ## Tailoring a resume with Claude Code
 
-`.claude/commands/tailor.md` adds a `/tailor` command to Claude Code. Open Claude Code in this folder and run `/tailor <job link>` (or paste the job description). It follows [docs/TAILORING.md](docs/TAILORING.md) step by step and stops at the checkpoint: no PDF is made until you approve the proposed resume. It needs a private `master-resume.md` in the project root.
+`.claude/commands/tailor.md` adds a `/tailor` command to Claude Code. Open Claude Code in this folder and run `/tailor <job link>` (or paste the job description). It follows [docs/TAILORING.md](docs/TAILORING.md) step by step and stops at the checkpoint: no PDF is made until you approve the proposed resume. It needs three things that are not in this repo, because they are private: a `master-resume.md` in the project root, a baseline source at `applications/_baseline/resume.toml`, and `applications/TRACKER.md`. TAILORING.md step 2 shows the folder layout.
 
 ## Resume source format
 
@@ -63,8 +63,8 @@ The master file, the per-job application folders and any source documents are gi
 
 - `docs/`: the project brief, the style guide for resume wording, and the tailoring playbook (`TAILORING.md`)
 - `examples/`: the fictional sample resume source
-- `src/`: the renderer (`render.py` and the layout template `resume.typ`) and the content checks (`checks.py`)
+- `src/`: the renderer (`render.py` and the layout template `resume.typ`), the content checks (`checks.py`) and the output checks (`pdf_checks.py`)
 - `.claude/commands/`: the `/tailor` command
 - `hooks/`: the pre-commit guard
 - `tests/`: the test suite
-- `requirements.txt`: the pinned dependency
+- `requirements.txt`: the two pinned dependencies (`typst` and `pypdf`)
