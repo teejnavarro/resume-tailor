@@ -57,7 +57,7 @@ The master file, the per-job application folders and any source documents are gi
 
 ## Repo layout
 
-- `docs/`: the project brief and the style guide for resume wording
+- `docs/`: the project brief, the style guide for resume wording, and the tailoring playbook (`TAILORING.md`)
 - `examples/`: the fictional sample resume source
 - `src/`: the renderer (`render.py` and the layout template `resume.typ`) and the content checks (`checks.py`)
 - `hooks/`: the pre-commit guard
