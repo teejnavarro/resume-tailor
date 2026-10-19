@@ -114,8 +114,9 @@ Then wait. I'll approve it, change parts of it, or say no. Add my answers and de
 
 ## Step 5: Rewriting bullets
 
-All wording follows [STYLE.md](STYLE.md): plain verbs, real names and numbers, one idea per bullet, no banned words. On top of that:
+All wording follows [STYLE.md](STYLE.md): strong, specific verbs, real names and numbers, one idea per bullet, no banned words. On top of that:
 
+- **Write the bullets for this job.** The baseline is the starting selection, not fixed text. For every bullet kept, rewrite it around what this posting cares about: lead with the part of the work the posting asks for, use its terms where they're true, and pick which facts from that master file entry to show (any resume-ready detail in it is fair game). Same facts, different emphasis per job.
 - **Truthful only.** A reworded bullet can swap in the posting's word for the same thing ("audience segmentation" for "building customer audiences"). It can't add a tool, a number, a title or a date that the master file doesn't have.
 - **Numbers stay as they are.** Don't round up, don't combine two numbers into a bigger one, don't turn "about" into an exact figure.
 - **No peso amounts** on any resume. The checks block them.
