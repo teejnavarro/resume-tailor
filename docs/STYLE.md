@@ -2,17 +2,17 @@
 
 > Every tailored resume is checked against this file before the PDF is made.
 
-## Voice: plain and direct
-Chosen by the owner (option A of three, 2026-10-16).
+## Voice: polished and professional
+Chosen by the owner on 2026-10-19 (replaces "plain and direct", 2026-10-16).
 
 Reference bullet:
-> Rewrote 25 report queries for the new warehouse and checked every rebuilt report against totals saved before the switch.
+> Re-engineered 25 report queries for the new warehouse and validated every rebuilt report against pre-migration totals.
 
 What makes it work:
-- Starts with a plain verb for what I did.
-- Names the real things: the tools, the counts, the objects.
-- One idea per bullet. No setup, no wrap-up line about "impact".
-- Would sound normal said out loud in an interview.
+- Opens with a strong, specific verb (designed, delivered, validated, reduced).
+- Names the real things: tools, counts, objects.
+- One idea per bullet. A result is stated when the master file has it, never invented.
+- Formal enough for a recruiter, still something I'd say out loud in an interview.
 
 ## Rules
 1. **Lead with the verb**, in past tense for past roles and present tense for the current role. Drop "I" in the final resume (Harvard style); the master file may use "I" in notes.
