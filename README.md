@@ -14,11 +14,11 @@ Keep one master career file and turn any job posting into a truthful, tailored, 
 
 ## Status
 
-Work in progress. The resume source format, a sample file, the renderer and the content checks are done. The output checks are next.
+Work in progress. The resume source format, a sample file, the renderer, the content checks and the output checks are done.
 
 ## Try it on the sample
 
-Needs Python 3.11 or newer. The only dependency is `typst`, installed with pip:
+Needs Python 3.11 or newer. There are two dependencies, `typst` and `pypdf`, installed with pip:
 
 ```
 python -m venv .venv
@@ -31,6 +31,8 @@ On macOS or Linux, use `.venv/bin/python` instead of `.venv\Scripts\python`.
 The sample is a made-up person, Jamie Sample, with invented employers.
 
 The renderer runs the content checks first and writes no PDF if one fails; without a master file it prints a warning and skips the number and skill checks (or pass `--no-master` to skip them quietly). To run the tests, install `requirements-dev.txt` and run `python -m pytest`. To turn on the commit guard that blocks personal data, run `git config core.hooksPath hooks` once.
+
+Each successful render ends with a one-line summary, for example `wrote sample.pdf (1 page, all text readable)`. The output checks read the finished PDF back: two pages print a warning (one is preferred), and three or more pages, or text that cannot be read back from the PDF, write no PDF at all.
 
 ## Resume source format
 
