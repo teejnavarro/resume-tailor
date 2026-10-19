@@ -14,7 +14,7 @@ Keep one master career file and turn any job posting into a truthful, tailored, 
 
 ## Status
 
-Work in progress. The resume source format, a sample file, the renderer, the content checks and the output checks are done.
+Working. The resume source format, a sample file, the renderer, the content and output checks, the tailoring playbook ([docs/TAILORING.md](docs/TAILORING.md)) and the `/tailor` command are done. The full workflow has been tried on real job postings from LinkedIn and Indeed, and the playbook was updated from what those runs showed.
 
 ## Try it on the sample
 
