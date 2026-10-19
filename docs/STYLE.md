@@ -23,6 +23,7 @@ What makes it work:
 6. **No stacked qualifiers** ("highly", "extremely", "deeply").
 7. **Context only when it changes the meaning.** "After a reorg cut the team from six to three" earns its place; "in a fast-paced environment" doesn't.
 8. **Honest labels.** Pilots are called pilots. AI-assisted work says so. Skills I can't be quizzed on (the master file marks which) never appear in the skills section.
+9. **End every bullet with a full stop.** Same for every bullet on the page, so nothing looks unfinished.
 
 ## Banned words and phrases
 Never use these (owner can add more):

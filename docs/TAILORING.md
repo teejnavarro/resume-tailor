@@ -18,7 +18,7 @@ Pick the route by where the link comes from:
 
 | Source | How to read it |
 |---|---|
-| Indeed | The Indeed connector (job details by link or job ID) |
+| Indeed | The Indeed connector (job details by link or job ID). If the connector fails, open the job page in the built-in browser. Indeed may show a security check first: Claude can't clear it, so I clear it in the browser pane and Claude reads the page after. |
 | LinkedIn | The browser built into the Claude desktop app. I sign in to LinkedIn there once. Read the page text only; never click Apply, Easy Apply or Message. |
 | Anything else, or reading fails | I paste the job description into the chat |
 
