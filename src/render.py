@@ -7,6 +7,7 @@ from pathlib import Path
 
 import typst
 from checks import MASTER, check_source
+from pdf_checks import check_pdf
 
 TEMPLATE = Path(__file__).with_name("resume.typ")
 
@@ -37,11 +38,24 @@ def main() -> int:
             sys_inputs={"resume": json.dumps(data)},
             ignore_system_fonts=True,
         )
+        pages, missing = check_pdf(pdf, data)
+        if missing:
+            more = f" (and {len(missing) - 1} more)" if len(missing) > 1 else ""
+            print(
+                f"render failed: text not readable in the PDF: {missing[0][:60]!r}{more}",
+                file=sys.stderr,
+            )
+            return 1
+        if pages >= 3:
+            print(f"render failed: {pages} pages (2 max), no PDF written", file=sys.stderr)
+            return 1
         args.output.write_bytes(pdf)
     except (OSError, UnicodeDecodeError, tomllib.TOMLDecodeError, TypeError, typst.TypstError) as e:
         print(f"render failed: {e}", file=sys.stderr)
         return 1
-    print(f"wrote {args.output}")
+    print(f"wrote {args.output} ({pages} page{'s' if pages > 1 else ''}, all text readable)")
+    if pages == 2:
+        print("warning: 2 pages (1 preferred)", file=sys.stderr)
     return 0
 
 
