@@ -36,7 +36,7 @@ Each successful render ends with a one-line summary, for example `wrote sample.p
 
 ## Tailoring a resume with Claude Code
 
-`.claude/commands/tailor.md` adds a `/tailor` command to Claude Code. Open Claude Code in this folder and run `/tailor <job link>` (or paste the job description). It follows [docs/TAILORING.md](docs/TAILORING.md) step by step and stops at the checkpoint: no PDF is made until you approve the proposed resume. It needs three things that are not in this repo, because they are private: a `master-resume.md` in the project root, a baseline source at `applications/_baseline/resume.toml`, and `applications/TRACKER.md`. TAILORING.md step 2 shows the folder layout.
+`.claude/commands/tailor.md` adds a `/tailor` command to Claude Code. Open Claude Code in this folder and run `/tailor <job link>` (or paste the job description). It follows [docs/TAILORING.md](docs/TAILORING.md) step by step and stops at the checkpoint: no PDF is made until you approve the proposed resume. It needs three things that are not in this repo, because they are private: a `master-resume.md` in the project root, a baseline source at `applications/_baseline/resume.toml`, and `applications/TRACKER.md`, a short file that points to a Notion database used as the applications tracker (the Notion connector must be connected). TAILORING.md step 2 shows the folder layout.
 
 ## Resume source format
 

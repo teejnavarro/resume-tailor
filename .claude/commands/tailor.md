@@ -8,7 +8,7 @@ Before anything else, read these files in full:
 - `docs/TAILORING.md`: the playbook. Follow its steps 1 to 9 in order, including the prep sheet in step 7.
 - `docs/STYLE.md`: voice rules and banned words.
 - `master-resume.md`: the only source of facts. It is private and local.
-- `applications/TRACKER.md`: the tracker.
+- `applications/TRACKER.md`: points to the Notion tracker database (private, local).
 
 Run every command from the project root.
 
@@ -19,6 +19,6 @@ Reading the job (TAILORING.md step 1):
 
 Step 4 is a hard stop. Show the checkpoint report, then end your turn. Do not create `resume.toml`, run the renderer or write any PDF until the owner has explicitly approved the checkpoint. If the owner asks for changes, update the report and stop again.
 
-Never apply, send messages, or use any write action on a connector or website.
+Never apply, send messages, or use any write action on a connector or website. The one exception: adding or updating this job's row in the Notion tracker database named in `applications/TRACKER.md`.
 
 The job: $ARGUMENTS

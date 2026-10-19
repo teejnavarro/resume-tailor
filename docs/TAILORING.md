@@ -32,7 +32,7 @@ Every job gets its own folder under `applications/`, which is git-ignored:
 
 ```
 applications/
-  TRACKER.md
+  TRACKER.md                     points to the Notion tracker (local only)
   _baseline/resume.toml          the approved general resume every job starts from
   YYYY-MM-DD_company_role/
     job.md                       copy of the posting and its link
@@ -45,15 +45,17 @@ applications/
 - The date is the day we start tailoring. Company and role are short, lowercase, with hyphens: `2026-11-03_acme-foods_data-analyst`.
 - The PDF name follows the pattern `Lastname_Firstname_Resume_Company.pdf`, with my real name filled in. It's the file a recruiter sees, so it carries my name and the company.
 
-Add a row to `applications/TRACKER.md` with status **Drafting**. The tracker is one Markdown table:
+The tracker is a Notion database. `applications/TRACKER.md` (private) names it and gives its data source.
 
-| Date | Company | Role | Source | Link | Status | Folder |
-|---|---|---|---|---|---|---|
+First look for an existing row with the same Link (a Notion rows query filtered on Link). If there is one, update only its Role, Deadline and Local folder, and never change its Status. Never add a second row. Otherwise add a row with Company, Role, Source, Link, Deadline (only if the posting states one), Local folder (the folder name) and Status **Drafting**.
+
+If Notion can't be reached or the write fails, carry on with tailoring. Tell me plainly that the row was not added, and put the row's values under a "Tracker row not added" heading in `notes.md` so it can be added later.
 
 Source is LinkedIn, Indeed or Other. Status is one of:
 
 - **Drafting**: we're working on it
 - **Applied**: I submitted the application myself
+- **Assessment**: I was sent a test or assessment
 - **Interview**: I heard back and have an interview
 - **Offer**: I got an offer
 - **Rejected**: they said no
@@ -188,9 +190,9 @@ Keep it to about one page, in the STYLE.md voice.
 When I approve the PDF:
 
 - Check the folder has all five files: `job.md`, `notes.md`, `resume.toml`, the PDF and `prep.md`.
-- Update the tracker row: link and folder filled in, status still **Drafting**.
-- The status moves to **Applied** only when I say I've applied. This tool never applies for me.
-- Later updates (Interview, Offer, Rejected, Withdrawn) happen when I report them.
+- Check the Notion row has its Link and Local folder filled in, and leave its status as it is (**Drafting** for a new job). If the earlier write failed, try again now, and once it works, remove the "Tracker row not added" note from `notes.md`.
+- The status moves to **Applied** only when I say I've applied, and the Applied date is set to that day. This tool never applies for me.
+- Later updates (Assessment, Interview, Offer, Rejected, Withdrawn) are made to the same Notion row when I report them.
 
 ## Step 9: Feed new facts back to the master file
 
@@ -205,11 +207,11 @@ The master file is what keeps every resume truthful, so it only changes with my 
 ## Checklist
 
 1. Read the job (Indeed connector, LinkedIn in the built-in browser, or pasted text). Save `job.md`.
-2. Create `applications/YYYY-MM-DD_company_role/`. Add a tracker row: Drafting.
+2. Create `applications/YYYY-MM-DD_company_role/`. Add or update the Notion tracker row: Drafting.
 3. Write the analysis in `notes.md`: must-haves, nice-to-haves, keywords, match table.
 4. **CHECKPOINT**: gaps, screening questions (salary as a range, only with OK), proposed resume. Wait for approval.
 5. Reword by STYLE.md. Truthful only, no peso amounts, about 17 bullets.
 6. Copy the baseline, apply the approved changes, render, fix failed checks, owner reads the PDF aloud.
 7. Write `prep.md`: role brief, form answers, likely questions, gaps, questions to ask, pay notes.
-8. Five files in the folder. Tracker updated. Applied only when I say so.
+8. Five files in the folder. Notion row updated. Applied only when I say so.
 9. New facts go to the master file only with my OK.

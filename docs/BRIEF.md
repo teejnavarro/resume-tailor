@@ -91,3 +91,9 @@
 - **Rules:** facts only from `master-resume.md` and the posting. Interview-only stories are allowed on the prep sheet but never on the resume. The company brief comes from the posting only; no web research unless the owner asks. Pay only as a range the owner approved for that job. STYLE.md voice, about one page.
 - **Still out of scope:** cover letters, and anything sent or submitted for the owner.
 - **Success:** every new job folder has a `prep.md` that traces to the master file and the posting, and that the owner would be happy to read ten minutes before an interview.
+
+## Amendment 2026-10-19 (approved by owner): Notion tracker
+- **Tracker moved to Notion:** application tracking now lives in a private Notion database built by the separate Job Tracker project. /tailor adds the row (status Drafting) and updates it; it checks the job link first so it never adds a duplicate.
+- **Privacy:** no Notion IDs in this repo. The local, git-ignored `applications/TRACKER.md` now only points to the database.
+- **Write rule:** the only connector write /tailor may make is this job's row in that database. Applying and sending stay out of scope.
+- **Replaces** the 2026-10-16 "Tracker format: Markdown" line.
