@@ -34,6 +34,10 @@ The renderer runs the content checks first and writes no PDF if one fails; witho
 
 Each successful render ends with a one-line summary, for example `wrote sample.pdf (1 page, all text readable)`. The output checks read the finished PDF back: two pages print a warning (one is preferred), and three or more pages, or text that cannot be read back from the PDF, write no PDF at all. So does a field the template does not print (the message names it). Whenever a render fails after the source file was read, an older PDF at the output path is removed so it cannot be mistaken for the new one; a source file that cannot be read never deletes anything.
 
+## Tailoring a resume with Claude Code
+
+`.claude/commands/tailor.md` adds a `/tailor` command to Claude Code. Open Claude Code in this folder and run `/tailor <job link>` (or paste the job description). It follows [docs/TAILORING.md](docs/TAILORING.md) step by step and stops at the checkpoint: no PDF is made until you approve the proposed resume. It needs a private `master-resume.md` in the project root.
+
 ## Resume source format
 
 The source file is TOML, read with Python's standard `tomllib`. Sections:
@@ -60,6 +64,7 @@ The master file, the per-job application folders and any source documents are gi
 - `docs/`: the project brief, the style guide for resume wording, and the tailoring playbook (`TAILORING.md`)
 - `examples/`: the fictional sample resume source
 - `src/`: the renderer (`render.py` and the layout template `resume.typ`) and the content checks (`checks.py`)
+- `.claude/commands/`: the `/tailor` command
 - `hooks/`: the pre-commit guard
 - `tests/`: the test suite
 - `requirements.txt`: the pinned dependency
