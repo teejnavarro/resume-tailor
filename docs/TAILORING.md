@@ -84,6 +84,7 @@ For every Gap and Partial in the match table, ask me directly: "The posting asks
 
 - If I say no, it stays off the resume. Say whether the gap looks like a dealbreaker (a must-have) or not (a nice-to-have).
 - If I say yes and tell you about it, that's a new fact. It goes through step 8 before it can go on any resume.
+- If I go ahead without answering a gap question, treat the gap as a no: keep it off the resume, and say so in your reply and in `notes.md`.
 - Skills the master file marks *Never list in Skills* are gaps no matter what. Flag them when the posting asks for them and never claim them, not in Skills and not in a bullet. The master file notes the one exception: a skill that may appear inside a specific bullet only. Follow that note exactly.
 
 ### Part 2: Screening questions
@@ -102,7 +103,13 @@ Show the full proposed content in reading order:
 - every reworded bullet next to its master file original, so I can see exactly what changed
 - which posting keywords each change brings in
 
-Then wait. I'll approve it, change parts of it, or say no. Record what I decided in `notes.md`.
+Save the whole checkpoint in `notes.md` before waiting:
+
+- every gap you asked about
+- every screening question with its suggested answer, or "none in the posting"
+- a short summary of the proposed resume
+
+Then wait. I'll approve it, change parts of it, or say no. Add my answers and decisions to `notes.md`.
 
 ## Step 5: Rewriting bullets
 
