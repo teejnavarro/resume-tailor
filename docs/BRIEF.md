@@ -84,3 +84,10 @@
 - **Personal data stays local:** `master-resume.md`, `applications/` (incl. the tracker) and `assets/source/` are git-ignored and never pushed. The public repo holds the code, `docs/STYLE.md`, `docs/TAILORING.md`, the `/tailor` command (if copied in) and a fictional sample resume.
 - **Fresh history:** the public repo starts with one clean first commit. The old local history (which contains the master file) is never pushed.
 - **Tracker format:** Markdown (`applications/TRACKER.md`), local only. Notion/Gmail tracking discussed and left out for now; it would need a further brief change.
+
+## Amendment 2026-10-19 (approved by owner): prep sheet
+- **Added to scope:** for every tailored resume, a role-specific prep sheet for application forms and interviews, saved as `applications/<job folder>/prep.md` (private, git-ignored) on every run, right after the PDF is approved.
+- **Contents:** role and company brief, application-form and screening answers, likely interview questions with answers (STAR where it fits), gaps and how to handle them honestly, questions to ask, pay notes.
+- **Rules:** facts only from `master-resume.md` and the posting. Interview-only stories are allowed on the prep sheet but never on the resume. The company brief comes from the posting only; no web research unless the owner asks. Pay only as a range the owner approved for that job. STYLE.md voice, about one page.
+- **Still out of scope:** cover letters, and anything sent or submitted for the owner.
+- **Success:** every new job folder has a `prep.md` that traces to the master file and the posting, and that the owner would be happy to read ten minutes before an interview.

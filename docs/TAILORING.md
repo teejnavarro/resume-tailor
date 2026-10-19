@@ -38,6 +38,7 @@ applications/
     job.md                       copy of the posting and its link
     notes.md                     analysis, checkpoint, screening answers, decisions
     resume.toml                  the tailored resume source
+    prep.md                      the prep sheet for forms and interviews (step 7)
     Lastname_Firstname_Resume_Company.pdf   the final PDF, the file I upload
 ```
 
@@ -83,7 +84,7 @@ Stop and show me one report with three parts. Don't build the resume source or r
 For every Gap and Partial in the match table, ask me directly: "The posting asks for X. The master file has nothing on it. Do you have experience with X?"
 
 - If I say no, it stays off the resume. Say whether the gap looks like a dealbreaker (a must-have) or not (a nice-to-have).
-- If I say yes and tell you about it, that's a new fact. It goes through step 8 before it can go on any resume.
+- If I say yes and tell you about it, that's a new fact. It goes through step 9 before it can go on any resume.
 - If I go ahead without answering a gap question, treat the gap as a no: keep it off the resume, and say so in your reply and in `notes.md`.
 - Skills the master file marks *Never list in Skills* are gaps no matter what. Flag them when the posting asks for them and never claim them, not in Skills and not in a bullet. The master file notes the one exception: a skill that may appear inside a specific bullet only. Follow that note exactly.
 
@@ -142,16 +143,55 @@ Only after the checkpoint is approved:
 4. If a check fails, fix `resume.toml`. If the fix changes what the resume says (not just a typo), show me the change first.
 5. Show me the PDF. I read it aloud. Anything I wouldn't say in an interview comes out or gets reworded, and we render again.
 
-## Step 7: Save and track
+## Step 7: Prep sheet
+
+Right after I approve the PDF, write `prep.md` in the job folder. It's my one-page cheat sheet for the application form and the interviews. It's private and never committed.
+
+Use only the posting and `master-resume.md`. Interview-only stories and private notes from the master file are fine here, since that's what they're for, but they still never go on the resume. If something isn't in either file, leave it out or mark it "ask me".
+
+```markdown
+# Prep: <Company> - <Role>
+
+## The role in brief
+3 to 5 lines from the posting only: what the job is, who it reports to,
+what they care about most, setup and schedule. No outside research unless I ask.
+
+## Form and screening answers
+| Question | My answer |
+|---|---|
+(The checkpoint answers I approved. Pay: only a range I approved for this job,
+otherwise "ask me first".)
+
+## Likely interview questions
+4 to 6 questions the posting points to. For each, a short answer in my voice,
+STAR where it fits (situation, task, action, result), with numbers from the master file.
+
+## Gaps and how I'll handle them
+| Gap | Honest answer |
+|---|---|
+(From the checkpoint: what I have that's closest, and how I'd close the gap.
+Never claim the gap.)
+
+## Questions to ask them
+3 to 5 questions about the team, the work and how success is measured.
+
+## Pay notes
+The approved range, if any, and the package questions to ask: HMO for dependents,
+bonus, 13th month; for contracts, payment terms, currency, notice and paid time off.
+```
+
+Keep it to about one page, in the STYLE.md voice.
+
+## Step 8: Save and track
 
 When I approve the PDF:
 
-- Check the folder has all four files: `job.md`, `notes.md`, `resume.toml` and the PDF.
+- Check the folder has all five files: `job.md`, `notes.md`, `resume.toml`, the PDF and `prep.md`.
 - Update the tracker row: link and folder filled in, status still **Drafting**.
 - The status moves to **Applied** only when I say I've applied. This tool never applies for me.
 - Later updates (Interview, Offer, Rejected, Withdrawn) happen when I report them.
 
-## Step 8: Feed new facts back to the master file
+## Step 9: Feed new facts back to the master file
 
 During tailoring I sometimes remember something that isn't in the master file: a tool I used, a number, a project. Don't use it straight away. Instead:
 
@@ -169,5 +209,6 @@ The master file is what keeps every resume truthful, so it only changes with my 
 4. **CHECKPOINT**: gaps, screening questions (salary as a range, only with OK), proposed resume. Wait for approval.
 5. Reword by STYLE.md. Truthful only, no peso amounts, about 17 bullets.
 6. Copy the baseline, apply the approved changes, render, fix failed checks, owner reads the PDF aloud.
-7. Four files in the folder. Tracker updated. Applied only when I say so.
-8. New facts go to the master file only with my OK.
+7. Write `prep.md`: role brief, form answers, likely questions, gaps, questions to ask, pay notes.
+8. Five files in the folder. Tracker updated. Applied only when I say so.
+9. New facts go to the master file only with my OK.

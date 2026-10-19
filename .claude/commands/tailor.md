@@ -5,7 +5,7 @@ argument-hint: <job link, or the pasted job description>
 Tailor a resume to the job below by following the playbook in this project.
 
 Before anything else, read these files in full:
-- `docs/TAILORING.md`: the playbook. Follow its steps 1 to 8 in order.
+- `docs/TAILORING.md`: the playbook. Follow its steps 1 to 9 in order, including the prep sheet in step 7.
 - `docs/STYLE.md`: voice rules and banned words.
 - `master-resume.md`: the only source of facts. It is private and local.
 - `applications/TRACKER.md`: the tracker.
