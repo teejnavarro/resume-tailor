@@ -136,3 +136,150 @@ def test_check_pdf_ignores_tables_the_template_does_not_print():
     pdf, data = sample_pdf_and_data()
     data["profile"] = {"email": "not-printed@example.com"}
     assert pdf_checks.check_pdf(pdf, data) == (1, [])
+
+
+# --- QA edge cases ----------------------------------------------------------
+
+
+def compile_data(data):
+    return typst.compile(
+        str(TEMPLATE), sys_inputs={"resume": json.dumps(data)}, ignore_system_fonts=True
+    )
+
+
+def with_bullet(text):
+    return {
+        "contact": {"name": "Pat Fictional"},
+        "experience": [{"company": "Co", "roles": [{"title": "Analyst", "bullets": [text]}]}],
+    }
+
+
+def write_toml(tmp_path, text):
+    path = tmp_path / "source.toml"
+    path.write_text(text, encoding="utf-8")
+    return path
+
+
+def test_one_page_summary_is_a_single_line(tmp_path):
+    out = tmp_path / "out.pdf"
+    result = render(SAMPLE, out, tmp_path)
+    assert result.stdout.strip() == f"wrote {out} (1 page, all text readable)"
+
+
+def test_two_page_summary_is_a_single_line_plus_warning(tmp_path):
+    out = tmp_path / "out.pdf"
+    result = render(fake_resume(tmp_path, 10), out, tmp_path)
+    assert result.stdout.strip() == f"wrote {out} (2 pages, all text readable)"
+    assert result.stderr.strip() == "warning: 2 pages (1 preferred)"
+
+
+@pytest.mark.parametrize(
+    "text",
+    [
+        "Jan 2019 \u2013 Dec 2021",
+        "Did this \u2014 then that",
+        "One \u2022 two",
+        "R&D and P&L",
+        "office fluffy affinity waffle",
+        "Jos\u00e9 Pi\u00f1a M\u00fcller",
+        "Pat's \"best\" '90s work",
+        "#strong *bold* _x_ $y$ <z> @ref",
+        "and so on\u2026",
+        "https://example.com/a-very/long/path/that/wraps/around/the/end/of/the/line/here",
+    ],
+)
+def test_check_pdf_reads_back_special_characters(text):
+    data = with_bullet(text)
+    assert pdf_checks.check_pdf(compile_data(data), data) == (1, [])
+
+
+def test_check_pdf_reads_skills_and_certifications():
+    data = {
+        "contact": {"name": "Pat Fictional"},
+        "skills": [{"category": "Tools", "items": ["Excel", "SQL", "Power BI"]}],
+        "certifications": ["Cert Alpha", "Cert Beta"],
+    }
+    pdf = compile_data(data)
+    assert pdf_checks.check_pdf(pdf, data) == (1, [])
+    data["certifications"].append("Cert Gamma")
+    assert pdf_checks.check_pdf(pdf, data) == (1, ["Cert Gamma"])
+
+
+def test_skills_are_printed_joined_with_comma_space():
+    data = {"contact": {"name": "Pat"}, "skills": [{"category": "Tools", "items": ["Excel", "SQL"]}]}
+    reader = pdf_checks.PdfReader(pdf_checks.io.BytesIO(compile_data(data)))
+    assert "Excel, SQL" in reader.pages[0].extract_text()
+
+
+def test_empty_optional_sections_pass(tmp_path):
+    source = write_toml(
+        tmp_path,
+        """projects = []
+leadership = []
+certifications = []
+
+[contact]
+name = "Pat Fictional"
+location = ""
+
+[[experience]]
+company = "Example Works"
+location = ""
+
+  [[experience.roles]]
+  title = "Analyst"
+  bullets = []
+
+[[skills]]
+category = "Tools"
+items = []
+""",
+    )
+    out = tmp_path / "out.pdf"
+    result = render(source, out, tmp_path)
+    assert result.returncode == 0, result.stderr
+    assert "1 page, all text readable" in result.stdout
+    assert out.exists()
+
+
+def test_unreadable_text_fails_and_writes_nothing(tmp_path):
+    name = "Pat " + chr(0x6F22) + chr(0x5B57)
+    source = write_toml(tmp_path, f'[contact]\nname = "{name}"\n')
+    out = tmp_path / "out.pdf"
+    result = render(source, out, tmp_path)
+    assert result.returncode == 1
+    assert "render failed: text not readable in the PDF:" in result.stderr
+    assert "Traceback" not in result.stderr
+    assert not out.exists()
+
+
+def test_unreadable_text_reports_how_many_more(tmp_path):
+    cjk = chr(0x6F22) + chr(0x5B57)
+    source = write_toml(
+        tmp_path,
+        f'[contact]\nname = "Pat"\nlocation = "{cjk}"\n\n[[skills]]\ncategory = "{cjk}"\nitems = ["{cjk}"]\n',
+    )
+    result = render(source, tmp_path / "out.pdf", tmp_path)
+    assert result.returncode == 1
+    assert "(and 2 more)" in result.stderr
+
+
+@pytest.mark.parametrize("kind", ["three-pages", "unreadable"])
+def test_failed_output_check_leaves_an_older_pdf_untouched(tmp_path, kind):
+    if kind == "three-pages":
+        source = fake_resume(tmp_path, 24)
+    else:
+        source = write_toml(tmp_path, f'[contact]\nname = "Pat {chr(0x6F22)}"\n')
+    out = tmp_path / "out.pdf"
+    out.write_bytes(b"older pdf")
+    result = render(source, out, tmp_path)
+    assert result.returncode == 1
+    assert out.read_bytes() == b"older pdf"
+
+
+def test_pypdf_is_a_runtime_requirement():
+    runtime = (ROOT / "requirements.txt").read_text(encoding="utf-8").split()
+    dev = (ROOT / "requirements-dev.txt").read_text(encoding="utf-8").split()
+    assert "pypdf==6.21.0" in runtime and "typst==0.15.0" in runtime
+    assert "-r" in dev and "requirements.txt" in dev
+    assert not any(line.startswith("pypdf") for line in dev)
