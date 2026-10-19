@@ -10,7 +10,7 @@ Keep one master career file and turn any job posting into a truthful, tailored, 
 4. The approved content is written to a per-job resume source file (TOML).
 5. Content checks run on that file: banned words, numbers that do not trace back to the master file, skills that should not be listed.
 6. The renderer turns the source file into a Harvard-style PDF (one page preferred, two at most).
-7. The PDF and its source are saved in a folder for that job.
+7. The PDF, its source and a one-page prep sheet for the application form and interviews are saved in a folder for that job.
 
 ## Status
 
