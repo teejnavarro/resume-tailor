@@ -186,6 +186,36 @@ def test_empty_optional_lists_print_no_heading(tmp_path):
         assert word not in text
 
 
+def test_headline_prints_between_name_and_contact_line(tmp_path):
+    headline = "Data Analyst | SQL, Reporting"
+    text, reader = render_toml(tmp_path, f'headline = "{headline}"\n' + MINIMAL)
+    assert len(reader.pages) == 1
+    printed = lines(text)
+    contact = "Anytown, USA  |  pat@example.com"
+    assert printed[:3] == ["Pat Minimal", headline, contact]
+
+
+def test_no_headline_adds_no_line(tmp_path):
+    base, _ = render_toml(tmp_path, MINIMAL)
+    with_headline, _ = render_toml(tmp_path, 'headline = "Extra line"\n' + MINIMAL)
+    assert len(lines(with_headline)) == len(lines(base)) + 1
+    assert [l for l in lines(with_headline) if l != "Extra line"] == lines(base)
+
+
+def test_empty_headline_adds_no_line(tmp_path):
+    base, _ = render_toml(tmp_path, MINIMAL)
+    empty, _ = render_toml(tmp_path, 'headline = ""\n' + MINIMAL)
+    assert lines(empty) == lines(base)
+
+
+def test_sample_with_headline_stays_one_page(tmp_path):
+    headline = "Data Analyst | SQL, Reporting, Forecasting"
+    source = f'headline = "{headline}"\n' + SAMPLE.read_text(encoding="utf-8")
+    text, reader = render_toml(tmp_path, source)
+    assert len(reader.pages) == 1
+    assert lines(text)[1] == headline
+
+
 def test_certifications_without_skills_still_print_under_skills(tmp_path):
     text, _ = render_toml(tmp_path, 'certifications = ["Cert A"]\n[contact]\nname = "Cert Only"\n')
     assert lines(text)[-2:] == ["Skills", "Certifications: Cert A"]
