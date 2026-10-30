@@ -208,12 +208,11 @@ def test_empty_headline_adds_no_line(tmp_path):
     assert lines(empty) == lines(base)
 
 
-def test_sample_with_headline_stays_one_page(tmp_path):
-    headline = "Data Analyst | SQL, Reporting, Forecasting"
-    source = f'headline = "{headline}"\n' + SAMPLE.read_text(encoding="utf-8")
-    text, reader = render_toml(tmp_path, source)
-    assert len(reader.pages) == 1
-    assert lines(text)[1] == headline
+def test_sample_headline_prints_under_name_and_stays_one_page(sample_pdf, sample_data):
+    assert sample_data["headline"]
+    assert len(sample_pdf["reader"].pages) == 1
+    printed = lines(sample_pdf["text"])
+    assert printed[:2] == [sample_data["contact"]["name"], sample_data["headline"]]
 
 
 def test_certifications_without_skills_still_print_under_skills(tmp_path):

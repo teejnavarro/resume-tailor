@@ -42,6 +42,7 @@ Each successful render ends with a one-line summary, for example `wrote sample.p
 
 The source file is TOML, read with Python's standard `tomllib`. Sections:
 
+- `headline`: optional string, printed centered under the name. Placed at the top of the file
 - `[contact]`: name, location, email, optional phone and links
 - `[[education]]`: school, location, degree, dates, optional details
 - `[[experience]]`: one per employer, with one or more `[[experience.roles]]` (title, dates, bullets)
@@ -49,7 +50,7 @@ The source file is TOML, read with Python's standard `tomllib`. Sections:
 - `[[skills]]`: a category and its items
 - `certifications`: optional list of strings, placed at the top of the file
 
-Optional: `phone`, `links`, `location`, education `details`, and the whole `projects`, `leadership` and `certifications` sections. A section with no entries is left out of the PDF.
+Optional: `headline`, `phone`, `links`, `location`, education `details`, and the whole `projects`, `leadership` and `certifications` sections. A section with no entries is left out of the PDF.
 
 The PDF prints the sections in this order: Experience, Projects, Leadership, Education, Skills. Certifications print as the last line of Skills.
 
