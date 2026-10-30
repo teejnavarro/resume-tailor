@@ -31,7 +31,7 @@
 #align(center)[
   #text(size: 18pt, weight: "bold", c.name)
   #let headline = get(r, "headline")
-  #if headline != none and headline != "" [
+  #if headline != none and headline.trim() != "" [
     \ #text(size: 11pt, style: "italic", headline)
   ]
   #let parts = (get(c, "location"), get(c, "email"), get(c, "phone"))
