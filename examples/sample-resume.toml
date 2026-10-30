@@ -1,5 +1,7 @@
 # Sample resume source for Resume Tailor. Everything here is invented.
 # Top-level keys must come before the first [table] header in TOML.
+# Optional line printed under the name, above the contact line.
+headline = "Data Analyst | SQL, Forecasting, Reporting"
 certifications = [
   "Google Data Analytics Professional Certificate",
   "Tableau Desktop Specialist",

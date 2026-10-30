@@ -348,6 +348,21 @@ def test_check_pdf_lists_unprinted_field_names():
     assert unprinted == ["contact.nickname", "experience.roles.notes"]
 
 
+def test_unreadable_headline_is_reported():
+    data = with_bullet("ok")
+    data["headline"] = "text that is not in the pdf"
+    pages, missing, unprinted = pdf_checks.check_pdf(compile_data(with_bullet("ok")), data)
+    assert pages == 1
+    assert missing == ["text that is not in the pdf"]
+    assert unprinted == []
+
+
+def test_headline_is_not_listed_as_unprinted():
+    data = with_bullet("ok")
+    data["headline"] = "Data Analyst"
+    assert pdf_checks.check_pdf(compile_data(data), data) == (1, [], [])
+
+
 def test_every_field_in_the_sample_is_in_fields():
     data = tomllib.loads(SAMPLE.read_text(encoding="utf-8"))
     assert pdf_checks.check_pdf(compile_data(data), data) == (1, [], [])

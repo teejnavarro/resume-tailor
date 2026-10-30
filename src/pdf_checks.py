@@ -9,6 +9,7 @@ from pypdf import PdfReader
 # are ignored by the template on purpose; unknown fields inside a listed
 # table are reported, because the template would silently drop them.
 FIELDS = {
+    "headline": None,
     "contact": {"name": None, "location": None, "email": None, "phone": None, "links": None},
     "experience": {
         "company": None,

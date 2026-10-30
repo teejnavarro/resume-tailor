@@ -406,6 +406,49 @@ def test_blocked_skill_only_checked_inside_skills_tables(tmp_path, master):
     assert run_source(write_source(tmp_path, lines), master)[0] == []
 
 
+def headline_source(tmp_path, headline):
+    return write_source(tmp_path, [f'headline = "{headline}"', "", *SOURCE_LINES])
+
+
+def test_clean_headline_passes(tmp_path, master):
+    path = headline_source(tmp_path, "Analyst | SQL")
+    assert run_source(path, master)[0] == []
+
+
+def test_headline_with_banned_word_fails(tmp_path, master):
+    path = headline_source(tmp_path, "Passionate analyst")
+    failures, _ = run_source(path, master)
+    assert [(f.line_no, f.rule) for f in failures] == [(1, "banned-word")]
+
+
+def test_headline_with_untraced_number_fails(tmp_path, master):
+    path = headline_source(tmp_path, "Analyst with 15 years of SQL")
+    failures, _ = run_source(path, master)
+    assert rules(failures) == [(1, "untraced-number", "15")]
+
+
+def test_headline_with_blocked_skill_fails(tmp_path, master):
+    path = headline_source(tmp_path, "Analyst | SQL, DAX")
+    failures, _ = run_source(path, master)
+    assert rules(failures) == [(1, "blocked-skill", "DAX")]
+
+
+def test_headline_with_peso_amount_fails(tmp_path, master):
+    path = headline_source(tmp_path, f"Analyst who saved {PESO}150")
+    failures, _ = run_source(path, master)
+    assert (1, "peso-amount") in [(f.line_no, f.rule) for f in failures]
+
+
+def test_render_refuses_failing_headline(tmp_path, master):
+    path = headline_source(tmp_path, "Passionate analyst")
+    out = tmp_path / "out.pdf"
+    result = run_cli(RENDER, path, out, "--master", master, cwd=tmp_path)
+    assert result.returncode == 1
+    assert f"{path}:1: banned-word" in result.stderr
+    assert "no PDF written" in result.stderr
+    assert not out.exists()
+
+
 def certs_source(tmp_path, certs_lines):
     return write_source(tmp_path, [*certs_lines, "", *SOURCE_LINES])
 

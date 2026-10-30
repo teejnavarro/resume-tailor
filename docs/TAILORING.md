@@ -103,7 +103,10 @@ List every question the posting or its application form asks (years of experienc
 Show the full proposed content in reading order:
 
 - which roles, bullets and skills to keep, cut or move up, with one line on why
+- the proposed headline (the line under my name), with the posting term it uses
+- the opening bullet of each role, so I can see what each role leads with
 - every reworded bullet next to its master file original, so I can see exactly what changed
+- how many bullets are reused unchanged from the baseline, and which ones
 - which posting keywords each change brings in
 
 Save the whole checkpoint in `notes.md` before waiting:
@@ -118,7 +121,11 @@ Then wait. I'll approve it, change parts of it, or say no. Add my answers and de
 
 All wording follows [STYLE.md](STYLE.md): strong, specific verbs, real names and numbers, one idea per bullet, no banned words. On top of that:
 
-- **Write the bullets for this job.** The baseline is the starting selection, not fixed text. For every bullet kept, rewrite it around what this posting cares about: lead with the part of the work the posting asks for, use its terms where they're true, and pick which facts from that master file entry to show (any resume-ready detail in it is fair game). Same facts, different emphasis per job.
+- **Rewrite by default.** Reusing a baseline bullet word for word is the exception, and Part 3 says how many I'm reusing. Write the bullets for this job. The baseline is the starting selection, not fixed text. For every bullet kept, rewrite it around what this posting cares about: lead with the part of the work the posting asks for, use its terms where they're true, and pick which facts from that master file entry to show (any resume-ready detail in it is fair game). Same facts, different emphasis per job.
+- **Vary the opening bullet.** In each role, the first bullet matches the posting's top must-have. Two jobs with different top must-haves get different opening bullets.
+- **Skills per job.** Reorder the Skills lines so the ones the posting cares about come first. Rename a category or item to the posting's term where it's true. Drop lines that don't help for this job.
+- **Current role: about 6 bullets, mostly one line.** A wall of text is hard to read. Facts that don't fit go to Skills or the prep sheet.
+- **Headline.** One line under my name, set per job. It uses only titles I have held or my LinkedIn wording, plus skills in the master file. Never a job title I haven't held. The banned words and number tracing apply to it like any other line.
 - **Truthful only.** A reworded bullet can swap in the posting's word for the same thing ("audience segmentation" for "building customer audiences"). It can't add a tool, a number, a title or a date that the master file doesn't have.
 - **Numbers stay as they are.** Don't round up, don't combine two numbers into a bigger one, don't turn "about" into an exact figure.
 - **No peso amounts** on any resume. The checks block them.
@@ -131,7 +138,7 @@ All wording follows [STYLE.md](STYLE.md): strong, specific verbs, real names and
 Only after the checkpoint is approved:
 
 1. Copy `applications/_baseline/resume.toml` into the job folder as `resume.toml`.
-2. Apply the approved changes from step 4 and nothing else.
+2. Apply the approved changes from step 4 and nothing else. That includes the headline, set as `headline = "..."` at the top of the file, before `[contact]`.
 3. Render it:
 
    ```
@@ -210,8 +217,8 @@ The master file is what keeps every resume truthful, so it only changes with my 
 2. Create `applications/YYYY-MM-DD_company_role/`. Add or update the Notion tracker row: Drafting.
 3. Write the analysis in `notes.md`: must-haves, nice-to-haves, keywords, match table.
 4. **CHECKPOINT**: gaps, screening questions (salary as a range, only with OK), proposed resume. Wait for approval.
-5. Reword by STYLE.md. Truthful only, no peso amounts, about 17 bullets.
-6. Copy the baseline, apply the approved changes, render, fix failed checks, owner reads the PDF aloud.
+5. Reword by STYLE.md. Truthful only, no peso amounts, about 17 bullets. Rewrite by default, vary each role's opening bullet, tune Skills, keep the current role to about 6 bullets, and write the headline.
+6. Copy the baseline, apply the approved changes (headline included), render, fix failed checks, owner reads the PDF aloud.
 7. Write `prep.md`: role brief, form answers, likely questions, gaps, questions to ask, pay notes.
 8. Five files in the folder. Notion row updated. Applied only when I say so.
 9. New facts go to the master file only with my OK.

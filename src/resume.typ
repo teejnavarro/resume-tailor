@@ -30,6 +30,10 @@
 #let c = r.contact
 #align(center)[
   #text(size: 18pt, weight: "bold", c.name)
+  #let headline = get(r, "headline")
+  #if headline != none and headline.trim() != "" [
+    \ #text(size: 11pt, style: "italic", headline)
+  ]
   #let parts = (get(c, "location"), get(c, "email"), get(c, "phone"))
   #let parts = (parts + get(c, "links", default: ())).filter(p => p != none and p != "")
   #if parts.len() > 0 [
