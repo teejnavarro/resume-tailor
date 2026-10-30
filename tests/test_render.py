@@ -208,6 +208,34 @@ def test_empty_headline_adds_no_line(tmp_path):
     assert lines(empty) == lines(base)
 
 
+def test_spaces_only_headline_adds_no_line(tmp_path):
+    base, _ = render_toml(tmp_path, MINIMAL)
+    spaces, _ = render_toml(tmp_path, 'headline = "   "\n' + MINIMAL)
+    assert lines(spaces) == lines(base)
+
+
+def test_headline_is_italic_11pt(tmp_path):
+    headline = "Data Analyst | SQL, Reporting"
+    _, reader = render_toml(tmp_path, f'headline = "{headline}"\n' + MINIMAL)
+    runs = []
+
+    def visit(text, cm, tm, font, size):
+        if text.strip():
+            runs.append((text.strip(), str(font["/BaseFont"]) if font else None, size))
+
+    reader.pages[0].extract_text(visitor_text=visit)
+    styles = {(name.split("+")[-1], size) for text, name, size in runs if text == headline}
+    assert styles == {("LibertinusSerif-Italic-Identity-H", 11.0)}
+
+
+def test_long_headline_is_read_back_and_stays_one_page(tmp_path):
+    headline = ("Senior Data Analyst | Marketing Allocations | SQL, Forecasting, Reporting, "
+                "Dashboards, Data Quality, Stakeholder Updates, Planning Support")
+    text, reader = render_toml(tmp_path, f'headline = "{headline}"\n' + MINIMAL)
+    assert len(reader.pages) == 1
+    assert "".join(headline.split()) in "".join(text.split())
+
+
 def test_sample_headline_prints_under_name_and_stays_one_page(sample_pdf, sample_data):
     assert sample_data["headline"]
     assert len(sample_pdf["reader"].pages) == 1

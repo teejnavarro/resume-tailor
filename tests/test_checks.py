@@ -433,6 +433,22 @@ def test_headline_with_blocked_skill_fails(tmp_path, master):
     assert rules(failures) == [(1, "blocked-skill", "DAX")]
 
 
+def test_headline_with_peso_amount_fails(tmp_path, master):
+    path = headline_source(tmp_path, f"Analyst who saved {PESO}150")
+    failures, _ = run_source(path, master)
+    assert (1, "peso-amount") in [(f.line_no, f.rule) for f in failures]
+
+
+def test_render_refuses_failing_headline(tmp_path, master):
+    path = headline_source(tmp_path, "Passionate analyst")
+    out = tmp_path / "out.pdf"
+    result = run_cli(RENDER, path, out, "--master", master, cwd=tmp_path)
+    assert result.returncode == 1
+    assert f"{path}:1: banned-word" in result.stderr
+    assert "no PDF written" in result.stderr
+    assert not out.exists()
+
+
 def certs_source(tmp_path, certs_lines):
     return write_source(tmp_path, [*certs_lines, "", *SOURCE_LINES])
 
