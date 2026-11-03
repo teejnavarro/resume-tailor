@@ -48,6 +48,17 @@ Plain swaps:
 - ❌ "Partnered with cross-functional stakeholders to drive alignment."
   ✅ "Met the finance team weekly until both teams used one definition of net sales."
 
+## Bullet check (at the checkpoint)
+Claude reads each proposed bullet and flags any that:
+- **Lists a duty with no outcome or scale.** "Responsible for weekly reports" says what the job was, not what I did with it.
+- **Stays vague.** "Worked with various teams" should name the team and the work.
+- **Opens with a weak verb.** Replace "helped with", "assisted", "worked on" and "participated in" with what I actually did, such as built, rewrote, checked, cut, traced, set up, automated, measured or trained. If I only supported the work, the bullet says so.
+
+A flag is a prompt to look again, not a reason to invent something. If the master file has nothing stronger, the plain bullet stays. A bullet doesn't need a number to pass.
+
+An optional shape, only when the master file has the facts: what changed, how it was measured, and how I did it.
+> Reduced weekly report prep from six hours to one by replacing manual exports with a scheduled query.
+
 ## Pre-PDF check (automatic)
 - [ ] No banned words
 - [ ] Every number traces to master-resume.md

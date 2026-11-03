@@ -69,3 +69,7 @@ The master file, the per-job application folders and any source documents are gi
 - `hooks/`: the pre-commit guard
 - `tests/`: the test suite
 - `requirements.txt`: the two pinned dependencies (`typst` and `pypdf`)
+
+## Credits
+
+Some playbook and style rules are adapted from [ResumeSkills](https://github.com/Paramchoudhary/ResumeSkills) (MIT, commit 74ae19e): the keyword table, bullet check, missing-number questions, and the company-type, certification and terminology rules.

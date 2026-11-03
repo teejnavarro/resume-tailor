@@ -97,3 +97,8 @@
 - **Privacy:** no Notion IDs in this repo. The local, git-ignored `applications/TRACKER.md` now only points to the database.
 - **Write rule:** the only connector write /tailor may make is this job's row in that database. Applying and sending stay out of scope.
 - **Replaces** the 2026-10-16 "Tracker format: Markdown" line.
+
+## Amendment 2026-11-03 (approved by owner): LinkedIn drafts and offer prep
+- **Added to scope:** on-demand LinkedIn profile drafts and offer negotiation prep, based on `master-resume.md` and saved in private local files.
+- **Rules:** Claude never edits a profile or sends anything. Market pay research only when the owner asks for that offer, from free sources.
+- **Still out of scope:** cover letters, editing the LinkedIn profile, and anything sent or submitted for the owner.
