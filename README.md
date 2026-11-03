@@ -38,6 +38,11 @@ Each successful render ends with a one-line summary, for example `wrote sample.p
 
 `.claude/commands/tailor.md` adds a `/tailor` command to Claude Code. Open Claude Code in this folder and run `/tailor <job link>` (or paste the job description). It follows [docs/TAILORING.md](docs/TAILORING.md) step by step and stops at the checkpoint: no PDF is made until you approve the proposed resume. It needs three things that are not in this repo, because they are private: a `master-resume.md` in the project root, a baseline source at `applications/_baseline/resume.toml`, and `applications/TRACKER.md`, a short file that points to a Notion database used as the applications tracker (the Notion connector must be connected). TAILORING.md step 2 shows the folder layout.
 
+Two more commands work from the same private master file:
+
+- `/linkedin [target roles, and optionally your current profile]` drafts a headline, About section and role descriptions, checks titles and dates against your resumes, and flags lines that expose internal figures. It writes `notes/linkedin.md` (private, git-ignored) for you to paste from. It never edits your profile.
+- `/negotiate <company and role, plus the offer>` runs when an offer arrives. It sums up the offer, proposes an ask, target and walk-away, and stops for your approval before writing `applications/<job folder>/offer.md` (private): counter-offer plan, email and call scripts, and fallback items, with Philippine pay items such as HMO, 13th month and government contributions. It never sends anything. You send every message.
+
 ## Resume source format
 
 The source file is TOML, read with Python's standard `tomllib`. Sections:
@@ -65,11 +70,11 @@ The master file, the per-job application folders and any source documents are gi
 - `docs/`: the project brief, the style guide for resume wording, and the tailoring playbook (`TAILORING.md`)
 - `examples/`: the fictional sample resume source
 - `src/`: the renderer (`render.py` and the layout template `resume.typ`), the content checks (`checks.py`) and the output checks (`pdf_checks.py`)
-- `.claude/commands/`: the `/tailor` command
+- `.claude/commands/`: the `/tailor`, `/linkedin` and `/negotiate` commands
 - `hooks/`: the pre-commit guard
 - `tests/`: the test suite
 - `requirements.txt`: the two pinned dependencies (`typst` and `pypdf`)
 
 ## Credits
 
-Some playbook and style rules are adapted from [ResumeSkills](https://github.com/Paramchoudhary/ResumeSkills) (MIT, commit 74ae19e): the keyword table, bullet check, missing-number questions, and the company-type, certification and terminology rules.
+Some playbook and style rules are adapted from [ResumeSkills](https://github.com/Paramchoudhary/ResumeSkills) (MIT, commit 74ae19e): the keyword table, bullet check, missing-number questions, and the company-type, certification and terminology rules. The `/linkedin` and `/negotiate` commands adapt ideas from its LinkedIn profile and salary negotiation skills, with the US-specific parts dropped and Philippine pay items added.
