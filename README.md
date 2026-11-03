@@ -38,7 +38,7 @@ Each successful render ends with a one-line summary, for example `wrote sample.p
 
 `.claude/commands/tailor.md` adds a `/tailor` command to Claude Code. Open Claude Code in this folder and run `/tailor <job link>` (or paste the job description). It follows [docs/TAILORING.md](docs/TAILORING.md) step by step and stops at the checkpoint: no PDF is made until you approve the proposed resume. It needs three things that are not in this repo, because they are private: a `master-resume.md` in the project root, a baseline source at `applications/_baseline/resume.toml`, and `applications/TRACKER.md`, a short file that points to a Notion database used as the applications tracker (the Notion connector must be connected). TAILORING.md step 2 shows the folder layout.
 
-Two more commands work from the same private master file:
+Two more commands work from the same private master file (`/linkedin` also reads the baseline source at `applications/_baseline/resume.toml`):
 
 - `/linkedin [target roles, and optionally your current profile]` drafts a headline, About section and role descriptions, checks titles and dates against your resumes, and flags lines that expose internal figures. It writes `notes/linkedin.md` (private, git-ignored) for you to paste from. It never edits your profile.
 - `/negotiate <company and role, plus the offer>` runs when an offer arrives. It sums up the offer, proposes an ask, target and walk-away, and stops for your approval before writing `applications/<job folder>/offer.md` (private): counter-offer plan, email and call scripts, and fallback items, with Philippine pay items such as HMO, 13th month and government contributions. It never sends anything. You send every message.

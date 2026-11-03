@@ -9,7 +9,7 @@ Before anything else, read these in full:
 - `docs/STYLE.md`: voice rules and banned words.
 - The job's `job.md`, `notes.md` and `prep.md`, when present.
 
-Folder: find the job under `applications/`. If none exists, create `applications/YYYY-MM-DD_company_role/` using the TAILORING.md step 2 naming. Do not write to Notion or any other connector.
+Folder: find the job under `applications/`. If none exists, create `applications/YYYY-MM-DD_company_role/` using the docs/TAILORING.md step 2 naming. Do not write to Notion or any other connector.
 
 Step 1, offer summary. Restate the offer as numbers and list what is missing.
 - Employee: base pay, 13th month, bonus and whether it is guaranteed, HMO and dependents, leave, allowances, government contributions (SSS, PhilHealth, Pag-IBIG), probation, start date.
@@ -30,6 +30,8 @@ Step 4, write `applications/<folder>/offer.md` with:
 - fallback items: signing bonus, earlier salary review, HMO dependents, allowances, leave, work setup, start date; for contracts, payment terms, currency and notice
 - questions to clarify
 - a reminder to get the final terms in writing
+
+What the employer sees: the justification, the email script, the call script and the pushback answers are things the owner will send or say. Build them from resume-ready master lines only: top-level bullets, headings and plain lines. Never use indented sub-bullets, `>` note lines or any line marked interview only. The floors, target and walk-away never appear in those parts.
 
 Never send anything. Never use a write action on any connector or website. Never invent a competing offer. Never volunteer the owner's current salary. Quote amounts only in `offer.md` and the chat. Use no unsourced statistics. STYLE.md voice and banned words apply to the scripts.
 

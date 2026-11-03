@@ -177,3 +177,24 @@ def test_negotiate_offer_file_has_fallbacks_and_written_terms():
     assert "signing bonus, earlier salary review, HMO dependents, allowances, leave, work setup, start date" in text
     assert "for contracts, payment terms, currency and notice" in text
     assert "a reminder to get the final terms in writing" in text
+
+
+def test_negotiate_keeps_private_master_lines_out_of_what_the_employer_sees():
+    text = read("negotiate")
+    assert "What the employer sees:" in text
+    rule = text.split("What the employer sees:", 1)[1].splitlines()[0]
+    for part in ("the justification", "the email script", "the call script", "the pushback answers"):
+        assert part in rule
+    assert "resume-ready master lines only: top-level bullets, headings and plain lines" in rule
+    assert "indented sub-bullets, `>` note lines or any line marked interview only" in rule
+    assert "The floors, target and walk-away never appear in those parts." in rule
+
+
+@pytest.mark.parametrize("name", NAMES)
+def test_commands_point_at_the_playbook_by_its_full_path(name):
+    assert not re.search(r"(?<!docs/)TAILORING\.md", read(name))
+
+
+def test_readme_says_linkedin_needs_the_baseline_source():
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "`/linkedin` also reads the baseline source at `applications/_baseline/resume.toml`" in readme

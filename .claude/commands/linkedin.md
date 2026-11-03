@@ -17,7 +17,7 @@ Facts:
 - Use only resume-ready master lines: top-level bullets, headings and plain lines. Never use indented sub-bullets, `>` note lines, the contact section, job-search preferences, pay, or any line marked interview only.
 - Add contact details only if the owner asks.
 - Follow any master note that restricts naming something.
-- A new fact goes through TAILORING.md step 9 before it can appear in the draft.
+- A new fact goes through docs/TAILORING.md step 9 before it can appear in the draft.
 
 Rules:
 - STYLE.md banned words and honest labels apply.
