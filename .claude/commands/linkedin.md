@@ -14,7 +14,7 @@ Input:
 - The owner may paste their current profile, or give a link. For a link, use the browser built into the Claude desktop app and read the page text only.
 
 Facts:
-- Use only resume-ready master lines: top-level bullets, not indented sub-bullets, not the contact section, not job-search preferences, not pay, and not any line marked interview only.
+- Use only resume-ready master lines: top-level bullets, headings and plain lines. Never use indented sub-bullets, `>` note lines, the contact section, job-search preferences, pay, or any line marked interview only.
 - Add contact details only if the owner asks.
 - Follow any master note that restricts naming something.
 - A new fact goes through TAILORING.md step 9 before it can appear in the draft.

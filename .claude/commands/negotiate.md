@@ -5,7 +5,7 @@ argument-hint: <company and role, or the job folder, plus the offer text>
 Prepare the owner to negotiate one job offer. Write the prep to a private file in that job's folder. The owner sends every message.
 
 Before anything else, read these in full:
-- `master-resume.md`, the job-search preferences section: the employee and contractor floors. It is private and local.
+- `master-resume.md`: the whole file. The job-search preferences section has the employee and contractor floors, and the rest has the facts that justify the counter-offer. It is private and local.
 - `docs/STYLE.md`: voice rules and banned words.
 - The job's `job.md`, `notes.md` and `prep.md`, when present.
 
