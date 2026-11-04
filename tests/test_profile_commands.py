@@ -186,7 +186,10 @@ def test_negotiate_keeps_private_master_lines_out_of_what_the_employer_sees():
     for part in ("the justification", "the email script", "the call script", "the pushback answers"):
         assert part in rule
     assert "resume-ready master lines only: top-level bullets, headings and plain lines" in rule
-    assert "indented sub-bullets, `>` note lines or any line marked interview only" in rule
+    assert (
+        "indented sub-bullets, `>` note lines, the contact section, job-search preferences, "
+        "any pay figure from the master, or any line marked interview only"
+    ) in rule
     assert "The floors, target and walk-away never appear in those parts." in rule
 
 
@@ -198,3 +201,21 @@ def test_commands_point_at_the_playbook_by_its_full_path(name):
 def test_readme_says_linkedin_needs_the_baseline_source():
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "`/linkedin` also reads the baseline source at `applications/_baseline/resume.toml`" in readme
+
+
+def test_linkedin_may_use_recorded_title_lines_for_the_title_only():
+    text = read("linkedin")
+    assert (
+        "One exception: an indented line that records a chosen LinkedIn title or a display title "
+        "on resumes may be used, for the title only. Nothing else on that line may be used."
+    ) in text
+    assert text.index("One exception:") > text.index("Use only resume-ready master lines")
+
+
+def test_playbook_rule_4_names_the_notion_exception():
+    text = (ROOT / "docs" / "TAILORING.md").read_text(encoding="utf-8")
+    assert (
+        "4. **Connectors are read-only, with one exception.** Read job postings, nothing else. "
+        "The one write is this job's row in the Notion tracker (step 2). No applying, no messages, "
+        "no posting, no profile edits, on any site or connector."
+    ) in text

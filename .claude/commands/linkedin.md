@@ -15,6 +15,7 @@ Input:
 
 Facts:
 - Use only resume-ready master lines: top-level bullets, headings and plain lines. Never use indented sub-bullets, `>` note lines, the contact section, job-search preferences, pay, or any line marked interview only.
+- One exception: an indented line that records a chosen LinkedIn title or a display title on resumes may be used, for the title only. Nothing else on that line may be used.
 - Add contact details only if the owner asks.
 - Follow any master note that restricts naming something.
 - A new fact goes through docs/TAILORING.md step 9 before it can appear in the draft.

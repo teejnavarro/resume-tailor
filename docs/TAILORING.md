@@ -9,7 +9,7 @@ This is the playbook for turning one job posting into one tailored resume. Claud
 1. **The master file is the only source of facts.** Every bullet, number, tool, title and date on a tailored resume comes from `master-resume.md`. If it isn't there, it doesn't go on the resume.
 2. **Nothing gets invented.** Rewording is fine. New tools, new numbers, bigger titles or shifted dates are not.
 3. **No PDF before the checkpoint is approved.** The checkpoint in step 4 is a hard stop.
-4. **Connectors are read-only.** Read job postings, nothing else. No applying, no messages, no posting, no profile edits, on any site or connector.
+4. **Connectors are read-only, with one exception.** Read job postings, nothing else. The one write is this job's row in the Notion tracker (step 2). No applying, no messages, no posting, no profile edits, on any site or connector.
 5. **Private stays private.** Salary, interview-only stories and contact details live in local, git-ignored files. They never go into this repo.
 
 ## Step 1: Read the job

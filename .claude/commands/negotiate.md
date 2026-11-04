@@ -31,7 +31,7 @@ Step 4, write `applications/<folder>/offer.md` with:
 - questions to clarify
 - a reminder to get the final terms in writing
 
-What the employer sees: the justification, the email script, the call script and the pushback answers are things the owner will send or say. Build them from resume-ready master lines only: top-level bullets, headings and plain lines. Never use indented sub-bullets, `>` note lines or any line marked interview only. The floors, target and walk-away never appear in those parts.
+What the employer sees: the justification, the email script, the call script and the pushback answers are things the owner will send or say. Build them from resume-ready master lines only: top-level bullets, headings and plain lines. Never use indented sub-bullets, `>` note lines, the contact section, job-search preferences, any pay figure from the master, or any line marked interview only. The floors, target and walk-away never appear in those parts.
 
 Never send anything. Never use a write action on any connector or website. Never invent a competing offer. Never volunteer the owner's current salary. Quote amounts only in `offer.md` and the chat. Use no unsourced statistics. STYLE.md voice and banned words apply to the scripts.
 
