@@ -9,7 +9,7 @@ This is the playbook for turning one job posting into one tailored resume. Claud
 1. **The master file is the only source of facts.** Every bullet, number, tool, title and date on a tailored resume comes from `master-resume.md`. If it isn't there, it doesn't go on the resume.
 2. **Nothing gets invented.** Rewording is fine. New tools, new numbers, bigger titles or shifted dates are not.
 3. **No PDF before the checkpoint is approved.** The checkpoint in step 4 is a hard stop.
-4. **Connectors are read-only.** Read job postings, nothing else. No applying, no messages, no posting, no profile edits, on any site or connector.
+4. **Connectors are read-only, with one exception.** Read job postings, nothing else. The one write is this job's row in the Notion tracker (step 2). No applying, no messages, no posting, no profile edits, on any site or connector.
 5. **Private stays private.** Salary, interview-only stories and contact details live in local, git-ignored files. They never go into this repo.
 
 ## Step 1: Read the job
@@ -39,11 +39,11 @@ applications/
     notes.md                     analysis, checkpoint, screening answers, decisions
     resume.toml                  the tailored resume source
     prep.md                      the prep sheet for forms and interviews (step 7)
-    Lastname_Firstname_Resume_Company.pdf   the final PDF, the file I upload
+    Lastname_Firstname_Resume_Role_Company.pdf   the final PDF, the file I upload
 ```
 
 - The date is the day we start tailoring. Company and role are short, lowercase, with hyphens: `2026-11-03_acme-foods_data-analyst`.
-- The PDF name follows the pattern `Lastname_Firstname_Resume_Company.pdf`, with my real name filled in. It's the file a recruiter sees, so it carries my name and the company.
+- The PDF name follows the pattern `Lastname_Firstname_Resume_Role_Company.pdf`, with my real name filled in and no spaces: `..._Resume_DataAnalyst_AcmeFoods.pdf`. It's the file a recruiter sees, so it carries my name, the role and the company, and two jobs at one company can't share a name. PDFs made before this rule keep their names.
 
 The tracker is a Notion database. `applications/TRACKER.md` (private) names it and gives its data source.
 
@@ -89,6 +89,7 @@ For every Gap and Partial in the match table, ask me directly: "The posting asks
 - If I say yes and tell you about it, that's a new fact. It goes through step 9 before it can go on any resume.
 - If I go ahead without answering a gap question, treat the gap as a no: keep it off the resume, and say so in your reply and in `notes.md`.
 - Skills the master file marks *Never list in Skills* are gaps no matter what. Flag them when the posting asks for them and never claim them, not in Skills and not in a bullet. The master file notes the one exception: a skill that may appear inside a specific bullet only. Follow that note exactly.
+- If a bullet that matters for this job has no number, ask me what's true: how many, how often, how large, or what changed before and after. Ask only for those bullets, not the whole resume. Never suggest a figure yourself. Anything I give you is a new fact and goes through step 9.
 
 ### Part 2: Screening questions
 
@@ -107,13 +108,23 @@ Show the full proposed content in reading order:
 - the opening bullet of each role, so I can see what each role leads with
 - every reworded bullet next to its master file original, so I can see exactly what changed
 - how many bullets are reused unchanged from the baseline, and which ones
-- which posting keywords each change brings in
+- any bullet the bullet check in STYLE.md flagged, next to its rewrite, or a note if the master file has nothing stronger
+- a keyword table with one row for each keyword from step 3:
+
+| Keyword | Match | Where it appears |
+|---|---|---|
+| Power BI | Exact | Skills, second bullet of the current role |
+| audience segmentation | Close: "building customer audiences" | First bullet of the current role |
+| Tableau | Missing | Gap, stays off the resume |
+
+The table only reports. It has no score or target. A missing keyword the master file can't support stays a gap, and a close match becomes exact only when the posting's word means the same thing.
 
 Save the whole checkpoint in `notes.md` before waiting:
 
 - every gap you asked about
 - every screening question with its suggested answer, or "none in the posting"
 - a short summary of the proposed resume
+- the keyword table
 
 Then wait. I'll approve it, change parts of it, or say no. Add my answers and decisions to `notes.md`.
 
@@ -125,6 +136,9 @@ All wording follows [STYLE.md](STYLE.md): strong, specific verbs, real names and
 - **Vary the opening bullet.** In each role, the first bullet matches the posting's top must-have. Two jobs with different top must-haves get different opening bullets.
 - **Skills per job.** Reorder the Skills lines so the ones the posting cares about come first. Rename a category or item to the posting's term where it's true. Drop lines that don't help for this job.
 - **Current role: about 6 bullets, mostly one line.** A wall of text is hard to read. Facts that don't fit go to Skills or the prep sheet.
+- **Emphasis by company type.** Choose what to lead with by the kind of employer, using true facts only. A startup: work across teams, initiative, building from little. A large company: scale, process and working within structure. A technical role at a non-tech company: the technical work plus what it did for the business.
+- **Certifications per job.** Pick the training and certifications from the master file that fit this posting, and cut the rest when space is short.
+- **Terms used correctly.** Use company and industry terms the way the posting uses them, and only ones I could explain in an interview.
 - **Headline.** One line under my name, set per job. It uses only titles I have held or my LinkedIn wording, plus skills in the master file. Never a job title I haven't held. The banned words and number tracing apply to it like any other line.
 - **Truthful only.** A reworded bullet can swap in the posting's word for the same thing ("audience segmentation" for "building customer audiences"). It can't add a tool, a number, a title or a date that the master file doesn't have.
 - **Numbers stay as they are.** Don't round up, don't combine two numbers into a bigger one, don't turn "about" into an exact figure.
@@ -142,7 +156,7 @@ Only after the checkpoint is approved:
 3. Render it:
 
    ```
-   .venv\Scripts\python src/render.py applications/<folder>/resume.toml applications/<folder>/Lastname_Firstname_Resume_Company.pdf
+   .venv\Scripts\python src/render.py applications/<folder>/resume.toml applications/<folder>/Lastname_Firstname_Resume_Role_Company.pdf
    ```
 
    The render runs the checks on its own:
@@ -151,7 +165,8 @@ Only after the checkpoint is approved:
 
    If any check fails, no PDF is written. The error names the file, line and rule.
 4. If a check fails, fix `resume.toml`. If the fix changes what the resume says (not just a typo), show me the change first.
-5. Show me the PDF. I read it aloud. Anything I wouldn't say in an interview comes out or gets reworded, and we render again.
+5. Repeat the keyword table from step 4 on the text read back from the PDF. Flag anything approved at the checkpoint that was lost in edits or in trimming to fit the page, and add the updated table to `notes.md`.
+6. Show me the PDF and the updated table. I read it aloud. Anything I wouldn't say in an interview comes out or gets reworded, and we render again.
 
 ## Step 7: Prep sheet
 
@@ -209,6 +224,8 @@ During tailoring I sometimes remember something that isn't in the master file: a
 2. Mark whether it's resume-ready (a top-level bullet) or a private note (an indented line, for interviews only).
 3. Add it only after I say yes. Then it can go on this resume and future ones.
 
+If I only have an estimate for a number, it can go in the master file on three conditions: I supplied it, I can defend it in an interview, and it's labelled "about". Claude never estimates or calculates a figure for me.
+
 The master file is what keeps every resume truthful, so it only changes with my OK.
 
 ## Checklist
@@ -216,9 +233,9 @@ The master file is what keeps every resume truthful, so it only changes with my 
 1. Read the job (Indeed connector, LinkedIn in the built-in browser, or pasted text). Save `job.md`.
 2. Create `applications/YYYY-MM-DD_company_role/`. Add or update the Notion tracker row: Drafting.
 3. Write the analysis in `notes.md`: must-haves, nice-to-haves, keywords, match table.
-4. **CHECKPOINT**: gaps, screening questions (salary as a range, only with OK), proposed resume. Wait for approval.
-5. Reword by STYLE.md. Truthful only, no peso amounts, about 17 bullets. Rewrite by default, vary each role's opening bullet, tune Skills, keep the current role to about 6 bullets, and write the headline.
-6. Copy the baseline, apply the approved changes (headline included), render, fix failed checks, owner reads the PDF aloud.
+4. **CHECKPOINT**: gaps and missing numbers, screening questions (salary as a range, only with OK), proposed resume, flagged bullets, keyword table. Wait for approval.
+5. Reword by STYLE.md. Truthful only, no peso amounts, about 17 bullets. Rewrite by default, vary each role's opening bullet, tune Skills and certifications, match emphasis to the company type, keep the current role to about 6 bullets, and write the headline.
+6. Copy the baseline, apply the approved changes (headline included), render, fix failed checks, repeat the keyword table on the PDF text, owner reads the PDF aloud.
 7. Write `prep.md`: role brief, form answers, likely questions, gaps, questions to ask, pay notes.
 8. Five files in the folder. Notion row updated. Applied only when I say so.
-9. New facts go to the master file only with my OK.
+9. New facts go to the master file only with my OK. Estimates only if I supply them and they're labelled "about".
