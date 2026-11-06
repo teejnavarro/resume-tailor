@@ -219,3 +219,38 @@ def test_playbook_rule_4_names_the_notion_exception():
         "The one write is this job's row in the Notion tracker (step 2). No applying, no messages, "
         "no posting, no profile edits, on any site or connector."
     ) in text
+
+
+def playbook_rule_4_lines():
+    text = (ROOT / "docs" / "TAILORING.md").read_text(encoding="utf-8")
+    return [line for line in text.splitlines() if line.startswith("4. **Connectors are read-only")]
+
+
+def test_playbook_rule_4_appears_once_and_the_old_wording_is_gone():
+    lines = playbook_rule_4_lines()
+    assert len(lines) == 1
+    assert "**Connectors are read-only.**" not in lines[0]
+
+
+def test_playbook_rule_4_and_tailor_name_the_same_single_write():
+    rule = playbook_rule_4_lines()[0]
+    tailor = (COMMANDS / "tailor.md").read_text(encoding="utf-8")
+    assert "with one exception" in rule
+    assert "The one write is this job's row in the Notion tracker" in rule
+    assert "The one exception: adding or updating this job's row in the Notion tracker" in tailor
+
+
+def facts_block(text):
+    block = text.split("\nFacts:\n", 1)[1].split("\n\n", 1)[0]
+    return block.splitlines()
+
+
+def test_linkedin_title_exception_leaves_the_private_line_ban_whole():
+    facts = facts_block(read("linkedin"))
+    assert facts[0].startswith("- Use only resume-ready master lines")
+    assert "Never use indented sub-bullets, `>` note lines, the contact section" in facts[0]
+    exceptions = [line for line in facts if "exception" in line.lower()]
+    assert exceptions == [facts[1]]
+    assert "a chosen LinkedIn title or a display title on resumes" in facts[1]
+    assert "for the title only. Nothing else on that line may be used." in facts[1]
+    assert read("linkedin").lower().count("exception") == 1
