@@ -24,7 +24,7 @@ What makes it work:
 7. **Context only when it changes the meaning.** "After a reorg cut the team from six to three" earns its place; "in a fast-paced environment" doesn't.
 8. **Honest labels.** Pilots are called pilots. AI-assisted work says so. Skills I can't be quizzed on (the master file marks which) never appear in the skills section.
 9. **End every bullet with a full stop.** Same for every bullet on the page, so nothing looks unfinished.
-10. **Write for a recruiter outside the company and the industry.** Added by the owner on 2026-11-06. Swap internal and industry jargon for plain words ("onshore QC" → "the US quality-check team", "banners" → "store brand names", "audience counts" → "customer counts", "macros" → "recorded test scripts", "prepaid offer" → "mobile offer"). Keep tool names (SQL, BigQuery, Power BI, Python), since recruiters and ATS scan for them. Introduce internal names on first use ("PACE, an internal tool that..."). Plain never means vague, and facts and numbers stay exactly as the master file has them.
+10. **Write for a recruiter outside the company and the industry.** Added by the owner on 2026-11-06. Swap internal and industry jargon for plain words (an internal team acronym → what the team does, "audience counts" → "customer counts", "macros" → "recorded test scripts", a company's own name for its products → the plain product type). Keep tool names (SQL, BigQuery, Power BI, Python), since recruiters and ATS scan for them. Introduce internal names on first use ("PACE, an internal tool that..."). Plain never means vague, and facts and numbers stay exactly as the master file has them.
 
 ## Banned words and phrases
 Never use these (owner can add more):
